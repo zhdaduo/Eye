@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="adText"
+            type="String" />
+
+        <variable
+            name="pictureUrl"
+            type="String" />
+
+        <variable
+            name="bannerClick"
+            type="android.view.View.OnClickListener" />
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_180"
+        android:onClick="@{bannerClick}">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_card"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:withCorner="@{pictureUrl}"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_ad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_4"
+            android:background="@drawable/shape_tv_ad"
+            android:text="@{adText}"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/sp_9"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:visibleIfNotNull="@{adText}"
+            tools:text="@sample/common.json/data/ad" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

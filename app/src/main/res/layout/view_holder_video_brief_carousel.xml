@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="timeText"
+            type="String" />
+
+        <variable
+            name="titleText"
+            type="String" />
+
+        <variable
+            name="descriptionText"
+            type="String" />
+
+        <variable
+            name="feedUrl"
+            type="String" />
+
+        <variable
+            name="videoClick"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_190"
+            android:onClick="@{videoClick}">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/iv_card"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:withCorner="@{feedUrl}"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:layout_marginBottom="@dimen/dp_6"
+                android:background="@drawable/shape_tv_time"
+                android:text="@{timeText}"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="@sample/common.json/data/time" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            style="@style/main_tv"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_5"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{titleText}"
+            android:textStyle="bold"
+            tools:text="@sample/common.json/data/title" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_description"
+            style="@style/content_tv"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_5"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{descriptionText}"
+            tools:text="@sample/common.json/data/description" />
+    </LinearLayout>
+</layout>

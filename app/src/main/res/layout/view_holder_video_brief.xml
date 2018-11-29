@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="titleText"
+            type="String" />
+
+        <variable
+            name="descriptionText"
+            type="String" />
+
+        <variable
+            name="coverUrl"
+            type="String" />
+
+        <variable
+            name="authorClick"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_70"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:onClick="@{authorClick}">
+
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_cover"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:withCircle="@{coverUrl}"
+            tools:srcCompat="@tools:sample/avatars" />
+
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            style="@style/main_tv"
+            android:layout_marginStart="@dimen/dp_16"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{titleText}"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/iv_cover"
+            app:layout_constraintTop_toTopOf="@+id/iv_cover"
+            tools:text="@sample/common.json/data/title" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_description"
+            style="@style/content_tv"
+            android:layout_width="@dimen/dp_0"
+            android:layout_marginStart="@dimen/dp_16"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{descriptionText}"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_cover"
+            app:layout_constraintEnd_toStartOf="@id/btn_focus"
+            app:layout_constraintStart_toEndOf="@id/iv_cover"
+            tools:text="@sample/common.json/data/description" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_focus"
+            style="@style/btn_focus"
+            android:text="@string/add_attention"
+            app:layout_constraintBottom_toBottomOf="@id/iv_cover"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_cover" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

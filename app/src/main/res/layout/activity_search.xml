@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/dp_16"
+    android:layout_marginEnd="@dimen/dp_16"
+    android:orientation="vertical"
+    tools:context=".view.home.search.SearchActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <com.mor.eye.view.home.search.SearchEditText
+            android:id="@+id/search_edit_text"
+            android:layout_width="@dimen/dp_300"
+            android:layout_height="@dimen/dp_30"
+            android:background="@drawable/shape_search"
+            android:hint="@string/search_hit"
+            android:imeOptions="actionSearch"
+            android:paddingStart="@dimen/dp_20"
+            android:paddingEnd="@dimen/dp_20"
+            android:singleLine="true"
+            android:textSize="@dimen/sp_13" />
+
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/cancel_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@color/colorBlackLight" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/history_fl"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/search_section_1"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/sp_20"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/delete_history"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:gravity="center"
+            android:text="@string/delete"
+            android:textColor="@color/control_color"
+            android:textSize="@dimen/sp_13" />
+    </FrameLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/layout_origin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:elevation="0dp">
+
+            <com.airbnb.epoxy.EpoxyRecyclerView
+                android:id="@+id/search_history_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                app:layout_scrollFlags="scroll"
+                tools:itemCount="5"
+                tools:listitem="@layout/view_holder_query_item" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_16"
+                android:text="@string/search_section_2"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/sp_20"
+                android:textStyle="bold"
+                app:layout_scrollFlags="snap" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <com.airbnb.epoxy.EpoxyRecyclerView
+            android:id="@+id/hot_search_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:itemCount="5"
+            tools:listitem="@layout/view_holder_query_item" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <com.airbnb.epoxy.EpoxyRecyclerView
+        android:id="@+id/result_search_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+</LinearLayout>

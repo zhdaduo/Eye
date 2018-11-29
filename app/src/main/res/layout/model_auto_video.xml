@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="timeText"
+            type="String" />
+
+        <variable
+            name="coverUrl"
+            type="String" />
+
+        <variable
+            name="titleText"
+            type="String" />
+
+        <variable
+            name="subTitleText"
+            type="CharSequence" />
+
+        <variable
+            name="descriptionText"
+            type="String" />
+
+        <variable
+            name="likeNumText"
+            type="CharSequence" />
+
+        <variable
+            name="commitNumText"
+            type="CharSequence" />
+
+        <variable
+            name="dateText"
+            type="String" />
+
+        <variable
+            name="autoPlayClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="authorClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="toggleClick"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{autoPlayClick}">
+
+        <include
+            android:id="@+id/header_view"
+            layout="@layout/item_header"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_64"
+            app:authorClick="@{authorClick}"
+            app:coverUrl="@{coverUrl}"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:subTitleText="@{subTitleText}"
+            app:titleText="@{titleText}" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            android:text="@{descriptionText}"
+            android:textColor="@color/main_text_color"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/header_view"
+            app:visibleIfNotNull="@{descriptionText}" />
+
+        <com.mor.eye.ui.AndroidTagGroup
+            android:id="@+id/video_tag_group"
+            style="@style/TagGroup.Light_Blue"
+            android:layout_width="0dp"
+            android:paddingBottom="@dimen/dp_16"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/tv_description" />
+
+        <com.mor.eye.view.home.community.EmptyControlVideo
+            android:id="@+id/video_item_player"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_190"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/video_tag_group" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:layout_marginBottom="@dimen/dp_6"
+            android:background="@drawable/shape_tv_time"
+            android:text="@{timeText}"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintBottom_toBottomOf="@id/video_item_player"
+            app:layout_constraintEnd_toEndOf="@id/video_item_player"
+            tools:text="@sample/common.json/data/time" />
+
+        <include
+            android:id="@+id/footer_view"
+            layout="@layout/item_footer"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_36"
+            app:commitNumText="@{commitNumText}"
+            app:dateText="@{dateText}"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/video_item_player"
+            app:likeNumText="@{likeNumText}"
+            app:toggleClick="@{toggleClick}" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/dp_16" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/dp_16" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

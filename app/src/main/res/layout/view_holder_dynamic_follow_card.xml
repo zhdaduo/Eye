@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="avatarUrl"
+            type="String" />
+
+        <variable
+            name="nickNameText"
+            type="String" />
+
+        <variable
+            name="titleText"
+            type="String" />
+
+        <variable
+            name="briefCardIconUrl"
+            type="String" />
+
+        <variable
+            name="briefCardTitleText"
+            type="String" />
+
+        <variable
+            name="briefCardDesText"
+            type="String" />
+
+        <variable
+            name="timeText"
+            type="String" />
+
+        <variable
+            name="showFocusIfTrue"
+            type="boolean" />
+
+        <variable
+            name="authorClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="briefCardClick"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_16"
+        android:onClick="@{briefCardClick}">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_head"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:layout_centerVertical="true"
+            android:onClick="@{authorClick}"
+            android:scaleType="centerCrop"
+            android:textColor="@color/main_text_color"
+            app:layout_constraintEnd_toStartOf="@id/tv_user_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:withCircle="@{avatarUrl}"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_user_name"
+            style="@style/main_tv"
+            android:layout_marginStart="@dimen/dp_8"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{nickNameText}"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/iv_head"
+            app:layout_constraintTop_toTopOf="@id/iv_head"
+            tools:text="@sample/common.json/data/title" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_text"
+            style="@style/content_tv"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{titleText}"
+            app:layout_constraintBottom_toBottomOf="@id/iv_head"
+            app:layout_constraintStart_toStartOf="@id/tv_user_name"
+            tools:text="@sample/common.json/data/description" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_action_arrow_right"
+            app:layout_constraintBottom_toBottomOf="@id/iv_head"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_head" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/briefCard"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_16"
+            android:background="@drawable/shape_brief_corner"
+            android:padding="@dimen/dp_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tv_user_name"
+            app:layout_constraintTop_toBottomOf="@id/iv_head">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/iv_cover"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:withCorner="@{briefCardIconUrl}"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_title"
+                style="@style/main_tv"
+                android:layout_width="@dimen/dp_0"
+                android:layout_marginStart="@dimen/dp_8"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{briefCardTitleText}"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/tv_description"
+                app:layout_constraintEnd_toStartOf="@id/btn_focus"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@id/iv_cover"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@sample/common.json/data/longTitle" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_description"
+                style="@style/content_tv"
+                android:layout_width="@dimen/dp_0"
+                android:layout_marginStart="@dimen/dp_8"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@{briefCardDesText}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_focus"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@id/iv_cover"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                tools:text="@sample/common.json/data/longDescription" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_focus"
+                style="@style/btn_focus"
+                android:layout_marginEnd="@dimen/dp_16"
+                android:text="@string/add_attention"
+                app:layout_constraintBottom_toBottomOf="@id/iv_cover"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/iv_cover"
+                app:visibleIfTrue="@{showFocusIfTrue}" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_time"
+            style="@style/content_tv"
+            android:layout_marginTop="@dimen/dp_16"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{timeText}"
+            app:layout_constraintStart_toStartOf="@id/tv_user_name"
+            app:layout_constraintTop_toBottomOf="@+id/briefCard"
+            tools:text="@sample/common.json/data/date" />
+
+        <View
+            style="@style/view_line"
+            android:layout_marginStart="@dimen/dp_56"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintTop_toBottomOf="@+id/tv_time" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

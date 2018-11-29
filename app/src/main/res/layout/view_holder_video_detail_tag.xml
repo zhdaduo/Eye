@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="tagImageUrl"
+            type="String" />
+
+        <variable
+            name="tagTitleText"
+            type="String" />
+
+        <variable
+            name="tagClick"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="@dimen/dp_108"
+        android:layout_height="@dimen/dp_55"
+        android:onClick="@{tagClick}">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_card"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:withCorner="@{tagImageUrl}" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            style="@style/content_tv"
+            android:layout_gravity="center"
+            android:text="@{tagTitleText}"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            tools:textColor="@android:color/black" />
+    </FrameLayout>
+</layout>

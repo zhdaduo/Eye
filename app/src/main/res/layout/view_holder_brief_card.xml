@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="pictureUrl"
+            type="String" />
+
+        <variable
+            name="titleText"
+            type="String" />
+
+        <variable
+            name="showCategoryIfTrue"
+            type="boolean" />
+
+        <variable
+            name="showFocusIfTrue"
+            type="boolean" />
+
+        <variable
+            name="descriptionText"
+            type="String" />
+
+        <variable
+            name="categoryClick"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_70"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:onClick="@{categoryClick}">
+
+        <ImageView
+            android:id="@+id/iv_cover"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:withCorner="@{pictureUrl}"
+            bind:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/main_tv"
+            android:layout_marginStart="@dimen/dp_16"
+            android:text="@{titleText}"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/iv_cover"
+            app:layout_constraintTop_toTopOf="@id/iv_cover"
+            bind:text="@sample/common.json/data/title" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            style="@style/content_tv"
+            android:layout_width="@dimen/dp_0"
+            android:layout_marginStart="@dimen/dp_16"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{descriptionText}"
+            app:layout_constraintBottom_toBottomOf="@id/iv_cover"
+            app:layout_constraintEnd_toStartOf="@id/btn_focus"
+            app:layout_constraintStart_toEndOf="@id/iv_cover"
+            bind:text="@sample/common.json/data/description" />
+
+        <ImageView
+            android:id="@+id/iv_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_action_menu"
+            app:layout_constraintBottom_toBottomOf="@id/iv_cover"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_cover"
+            app:visibleIfTrue="@{showCategoryIfTrue}" />
+
+        <Button
+            android:id="@+id/btn_focus"
+            style="@style/btn_focus"
+            android:text="@string/add_attention"
+            app:layout_constraintBottom_toBottomOf="@id/iv_cover"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_cover"
+            app:visibleIfTrue="@{showFocusIfTrue}" />
+
+        <View
+            style="@style/view_line"
+            android:layout_alignParentBottom="true" />
+    </android.support.constraint.ConstraintLayout>
+</layout>

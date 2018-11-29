@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="pictureUrl"
+            type="String" />
+
+        <variable
+            name="bannerClick"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_card"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_190"
+            android:onClick="@{bannerClick}"
+            android:scaleType="centerCrop"
+            app:withCorner="@{pictureUrl}"
+            tools:srcCompat="@tools:sample/avatars" />
+    </FrameLayout>
+</layout>

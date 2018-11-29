@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="queryText"
+            type="String" />
+
+        <variable
+            name="queryClick"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onClick="@{queryClick}"
+            android:text="@{queryText}"
+            android:textColor="@color/control_color"
+            android:textStyle="bold"
+            tools:text="@sample/common.json/data/category" />
+
+        <View
+            style="@style/view_line"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginBottom="@dimen/dp_8" />
+    </LinearLayout>
+</layout>

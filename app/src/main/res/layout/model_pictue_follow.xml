@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="coverUrl"
+            type="String" />
+
+        <variable
+            name="titleText"
+            type="String" />
+
+        <variable
+            name="subTitleText"
+            type="CharSequence" />
+
+        <variable
+            name="descriptionText"
+            type="String" />
+
+        <variable
+            name="likeNumText"
+            type="CharSequence" />
+
+        <variable
+            name="commitNumText"
+            type="CharSequence" />
+
+        <variable
+            name="dateText"
+            type="String" />
+
+        <variable
+            name="authorClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="toggleClick"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/header_view"
+            layout="@layout/item_header"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_64"
+            app:authorClick="@{authorClick}"
+            app:coverUrl="@{coverUrl}"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:subTitleText="@{subTitleText}"
+            app:titleText="@{titleText}" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            android:text="@{descriptionText}"
+            android:textColor="@color/main_text_color"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/header_view"
+            app:visibleIfNotNull="@{descriptionText}" />
+
+        <com.mor.eye.ui.AndroidTagGroup
+            android:id="@+id/picture_tag_group"
+            style="@style/TagGroup.Light_Blue"
+            android:layout_width="0dp"
+            android:paddingBottom="@dimen/dp_16"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/tv_description" />
+
+        <com.mor.eye.view.home.community.ImageNice9Layout
+            android:id="@+id/nine_image"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/picture_tag_group"
+            app:nice9_itemMargin="5dp" />
+
+        <include
+            android:id="@+id/footer_view"
+            layout="@layout/item_footer"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_36"
+            app:commitNumText="@{commitNumText}"
+            app:dateText="@{dateText}"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/nine_image"
+            app:likeNumText="@{likeNumText}"
+            app:toggleClick="@{toggleClick}" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/dp_16" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/dp_16" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

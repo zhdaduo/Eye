@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="tabs">
+        <item>发现</item>
+        <item>推荐</item>
+        <item>日报</item>
+        <item>社区</item>
+        <item>广告</item>
+        <item>生活</item>
+        <item>动画</item>
+        <item>搞笑</item>
+        <item>开胃</item>
+        <item>创意</item>
+        <item>运动</item>
+        <item>音乐</item>
+        <item>萌宠</item>
+        <item>剧情</item>
+        <item>科技</item>
+        <item>旅行</item>
+        <item>影视</item>
+        <item>记录</item>
+        <item>游戏</item>
+        <item>综艺</item>
+        <item>时尚</item>
+        <item>集锦</item>
+    </array>
+
+    <array name="tabs_order">
+        <item>-1</item>
+        <item>-2</item>
+        <item>-3</item>
+        <item>-4</item>
+        <item>14</item>
+        <item>36</item>
+        <item>10</item>
+        <item>28</item>
+        <item>4</item>
+        <item>2</item>
+        <item>18</item>
+        <item>20</item>
+        <item>26</item>
+        <item>12</item>
+        <item>32</item>
+        <item>6</item>
+        <item>8</item>
+        <item>22</item>
+        <item>30</item>
+        <item>38</item>
+        <item>24</item>
+        <item>34</item>
+    </array>
+
+    <array name="categories_tabs">
+        <item>首页</item>
+        <item>全部</item>
+        <item>作者</item>
+        <item>专辑</item>
+    </array>
+    <array name="tags_tabs">
+        <item>视频</item>
+        <item>动态</item>
+    </array>
+    <array name="author_tabs">
+        <item>首页</item>
+        <item>视频</item>
+        <item>动态</item>
+    </array>
+</resources>

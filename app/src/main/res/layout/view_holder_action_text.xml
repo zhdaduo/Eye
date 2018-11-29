@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="actionText"
+            type="String" />
+
+        <variable
+            name="actionClick"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <android.support.v7.widget.AppCompatTextView
+        style="@style/main_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_50"
+        android:gravity="center_horizontal"
+        android:onClick="@{actionClick}"
+        android:text="@{actionText}"
+        tools:text="@sample/common.json/data/category" />
+</layout>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="titleText"
+            type="String" />
+
+        <variable
+            name="categoryText"
+            type="String" />
+
+        <variable
+            name="descriptionText"
+            type="String" />
+
+        <variable
+            name="likeNumText"
+            type="String" />
+
+        <variable
+            name="shareNumText"
+            type="String" />
+
+        <variable
+            name="replyNumText"
+            type="String" />
+
+        <variable
+            name="likeClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="shareClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="replyClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="downloadClick"
+            type="android.view.View.OnClickListener" />
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            style="@style/content_tv"
+            android:layout_width="@dimen/dp_0"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{titleText}"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@sample/common.json/data/longTitle"
+            tools:textColor="@android:color/black" />
+
+        <Space
+            android:id="@+id/space1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_8"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_category"
+            style="@style/content_tv"
+            android:layout_width="@dimen/dp_0"
+            android:text="@{categoryText}"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintEnd_toEndOf="@+id/tv_title"
+            app:layout_constraintStart_toStartOf="@+id/tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/space1"
+            tools:text="@sample/common.json/data/category"
+            tools:textColor="@android:color/black" />
+
+        <Space
+            android:id="@+id/space2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_8"
+            app:layout_constraintTop_toBottomOf="@id/tv_category" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_description"
+            style="@style/main_tv"
+            android:layout_width="@dimen/dp_0"
+            android:text="@{descriptionText}"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintEnd_toEndOf="@+id/tv_category"
+            app:layout_constraintStart_toStartOf="@+id/tv_category"
+            app:layout_constraintTop_toBottomOf="@+id/space2"
+            tools:text="@sample/common.json/data/longDescription"
+            tools:textColor="@android:color/black" />
+
+        <Space
+            android:id="@+id/space3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_8"
+            app:layout_constraintTop_toBottomOf="@id/tv_description" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_like_num"
+            style="@style/content_tv"
+            android:drawableStart="@drawable/ic_action_heart"
+            android:drawablePadding="@dimen/dp_4"
+            android:onClick="@{likeClick}"
+            android:text="@{likeNumText}"
+            android:textColor="@color/colorWhite"
+            app:drawableColor="@{@color/colorWhite}"
+            app:layout_constraintEnd_toStartOf="@+id/tv_share_num"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="@+id/tv_description"
+            app:layout_constraintTop_toBottomOf="@+id/space3"
+            tools:text="@sample/common.json/data/number"
+            tools:textColor="@android:color/black" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_share_num"
+            style="@style/content_tv"
+            android:drawableStart="@drawable/ic_action_upload"
+            android:drawablePadding="@dimen/dp_4"
+            android:onClick="@{shareClick}"
+            android:text="@{shareNumText}"
+            android:textColor="@color/colorWhite"
+            app:drawableColor="@{@color/colorWhite}"
+            app:layout_constraintEnd_toStartOf="@+id/tv_reply_num"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_like_num"
+            app:layout_constraintTop_toBottomOf="@+id/space3"
+            tools:text="@sample/common.json/data/number"
+            tools:textColor="@android:color/black" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_reply_num"
+            style="@style/content_tv"
+            android:drawableStart="@drawable/ic_action_message"
+            android:drawablePadding="@dimen/dp_4"
+            android:onClick="@{replyClick}"
+            android:text="@{replyNumText}"
+            android:textColor="@color/colorWhite"
+            app:drawableColor="@{@color/colorWhite}"
+            app:layout_constraintEnd_toStartOf="@+id/tv_download_num"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_share_num"
+            app:layout_constraintTop_toBottomOf="@+id/space3"
+            tools:text="@sample/common.json/data/number"
+            tools:textColor="@android:color/black" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_download_num"
+            style="@style/content_tv"
+            android:drawableStart="@drawable/ic_action_preload"
+            android:drawablePadding="@dimen/dp_4"
+            android:onClick="@{downloadClick}"
+            android:text="@string/download"
+            android:textColor="@color/colorWhite"
+            app:drawableColor="@{@color/colorWhite}"
+            app:layout_constraintEnd_toEndOf="@+id/tv_description"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_reply_num"
+            app:layout_constraintTop_toBottomOf="@+id/space3"
+            tools:textColor="@android:color/black" />
+
+        <View
+            android:id="@+id/view_line_gray"
+            style="@style/view_line_gray"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginBottom="@dimen/dp_8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_download_num" />
+    </android.support.constraint.ConstraintLayout>
+</layout>
