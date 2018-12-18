@@ -6,10 +6,7 @@ import com.mor.eye.repository.EyeRepository
 import com.mor.eye.repository.data.ItemListBean
 import com.mor.eye.ui.Status
 import com.mor.eye.ui.UiResource
-import com.mor.eye.util.StringUtils
 import com.mor.eye.util.ktx.SingleLiveEvent
-import com.mor.eye.util.other.DataSourceConstant.Companion.FIND_NUM
-import com.mor.eye.util.other.DataSourceConstant.Companion.FIND_START
 import com.mor.eye.util.rx.SchedulerProvider
 import com.mor.eye.util.rx.with
 import com.mor.eye.view.base.AbstractViewModel
@@ -19,9 +16,9 @@ class FindViewModel(private val repository: EyeRepository, private val scheduler
     private val _uiLoadData = MutableLiveData<List<ItemListBean>>()
     private val _uiLoadMoreData = MutableLiveData<List<ItemListBean>>()
 
-    private var stringHashMap = HashMap<String, String?>()
-    private val id = -1
+    private val categoryType = -1
     private var enableScrollToEnd = true
+    private var nextPageUrl: String? = null
 
     val uiLoadData: LiveData<List<ItemListBean>>
         get() = _uiLoadData
@@ -30,7 +27,7 @@ class FindViewModel(private val repository: EyeRepository, private val scheduler
 
     override fun refresh() {
         launch {
-            repository.getCommonTabData(id)
+            repository.getCommonTabData(categoryType)
                     .doOnSubscribe { uiEvent.postValue(UiResource(Status.REFRESHING)) }
                     .with(scheduler)
                     .subscribe(
@@ -43,10 +40,7 @@ class FindViewModel(private val repository: EyeRepository, private val scheduler
                                 if (findBean.nextPageUrl == null) {
                                     enableScrollToEnd = false
                                 } else {
-                                    findBean.nextPageUrl.let { url ->
-                                        stringHashMap[FIND_START] = StringUtils.urlRequest(url)["start"]
-                                        stringHashMap[FIND_NUM] = "null"
-                                    }
+                                    nextPageUrl = findBean.nextPageUrl
                                 }
                             },
                             { t ->
@@ -59,7 +53,7 @@ class FindViewModel(private val repository: EyeRepository, private val scheduler
     override fun onListScrolledToEnd() {
         if (enableScrollToEnd) {
             launch {
-                repository.getMoreCommonTabData(stringHashMap, id)
+                repository.getLoadMoreData(nextPageUrl!!)
                         .doOnSubscribe { uiEvent.postValue(UiResource(Status.LOADING_MORE)) }
                         .with(scheduler)
                         .subscribe(
@@ -72,10 +66,7 @@ class FindViewModel(private val repository: EyeRepository, private val scheduler
                                     if (findBean.nextPageUrl == null) {
                                         enableScrollToEnd = false
                                     } else {
-                                        findBean.nextPageUrl.let { url ->
-                                            stringHashMap[FIND_START] = StringUtils.urlRequest(url)["start"]
-                                            stringHashMap[FIND_NUM] = StringUtils.urlRequest(url)["num"]
-                                        }
+                                        nextPageUrl = findBean.nextPageUrl
                                     }
                                 },
                                 { t ->

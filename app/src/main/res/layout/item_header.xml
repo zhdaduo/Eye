@@ -32,10 +32,10 @@
             android:layout_height="@dimen/dp_40"
             android:onClick="@{authorClick}"
             android:scaleType="centerCrop"
+            app:imageCircle="@{coverUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:withCircle="@{coverUrl}"
             tools:srcCompat="@tools:sample/avatars" />
 
         <android.support.v7.widget.AppCompatTextView

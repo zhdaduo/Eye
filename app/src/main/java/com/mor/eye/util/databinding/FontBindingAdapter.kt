@@ -1,15 +1,15 @@
 package com.mor.eye.util.databinding
 
 import android.content.Context
-import android.databinding.BindingAdapter
 import android.databinding.BindingConversion
 import android.graphics.Typeface
 import android.util.ArrayMap
+import android.databinding.BindingAdapter
 import android.widget.TextView
 import com.mor.eye.EyeApplication
 import com.mor.eye.R
 
-@BindingAdapter("bind:textStyle")
+@BindingAdapter("textStyle")
 fun setTypeface(v: TextView, style: String) {
     when (style) {
         "bold" -> v.typeface = convertStringToFace(EyeApplication.instance.getString(R.string.lan_ting_bold))

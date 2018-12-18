@@ -1,44 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:titlebar="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="@dimen/dp_16"
-    android:layout_marginEnd="@dimen/dp_16"
-    android:orientation="vertical"
-    tools:context=".view.home.search.SearchActivity">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <com.mor.eye.view.home.search.SearchEditText
-            android:id="@+id/search_edit_text"
-            android:layout_width="@dimen/dp_300"
-            android:layout_height="@dimen/dp_30"
-            android:background="@drawable/shape_search"
-            android:hint="@string/search_hit"
-            android:imeOptions="actionSearch"
-            android:paddingStart="@dimen/dp_20"
-            android:paddingEnd="@dimen/dp_20"
-            android:singleLine="true"
-            android:textSize="@dimen/sp_13" />
-
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/cancel_main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/cancel"
-            android:textColor="@color/colorBlackLight" />
-    </LinearLayout>
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/history_fl"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50">
+        android:layout_height="@dimen/dp_50"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_16">
 
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
@@ -63,7 +37,9 @@
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/layout_origin"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_16">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -103,9 +79,15 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-    <com.airbnb.epoxy.EpoxyRecyclerView
-        android:id="@+id/result_search_rv"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+        android:layout_height="match_parent">
+
+        <com.airbnb.epoxy.EpoxyRecyclerView
+            android:id="@+id/result_search_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

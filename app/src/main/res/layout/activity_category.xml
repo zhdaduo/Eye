@@ -4,12 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".view.home.category.CategoryActivity">
-
-    <include
-        android:id="@+id/layout_app_bar"
-        layout="@layout/layout_toolbar" />
+    android:orientation="vertical">
 
     <com.airbnb.epoxy.EpoxyRecyclerView
         android:id="@+id/category_rv"

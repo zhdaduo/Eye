@@ -9,21 +9,9 @@
     app:layout_constraintStart_toStartOf="parent">
 
     <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/ivActionMore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_16"
-        android:layout_marginEnd="@dimen/dp_16"
-        android:scaleType="centerCrop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_action_more_fill_circle" />
-
-    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/ivAvatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -97,7 +85,7 @@
         app:layout_constraintTop_toBottomOf="@+id/line1" />
 
     <com.airbnb.epoxy.EpoxyRecyclerView
-        android:id="@+id/category_rv"
+        android:id="@+id/action_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"

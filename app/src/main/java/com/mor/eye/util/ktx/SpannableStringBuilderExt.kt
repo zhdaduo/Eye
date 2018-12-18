@@ -1,8 +1,11 @@
 package com.mor.eye.util.ktx
 
+import android.content.Context
 import android.graphics.Typeface.BOLD
 import android.graphics.Typeface.ITALIC
+import android.graphics.drawable.Drawable
 import android.support.annotation.ColorInt
+import android.support.annotation.DimenRes
 import android.text.Spannable.SPAN_INCLUSIVE_EXCLUSIVE
 import android.text.SpannableStringBuilder
 import android.text.SpannedString
@@ -129,3 +132,35 @@ inline fun SpannableStringBuilder.superscript(builderAction: SpannableStringBuil
  */
 inline fun SpannableStringBuilder.subscript(builderAction: SpannableStringBuilder.() -> Unit) =
         inSpans(SubscriptSpan(), builderAction = builderAction)
+
+/**
+ * Wrap appended text in [builderAction] in a [AbsoluteSizeSpan].
+ *
+ * @see SpannableStringBuilder.inSpans
+ */
+inline fun SpannableStringBuilder.size(
+        size: Int,
+        builderAction: SpannableStringBuilder.() -> Unit
+) = inSpans(AbsoluteSizeSpan(size), builderAction = builderAction)
+
+/**
+ * Wrap appended text in [builderAction] in a [ImageSpan].
+ *
+ * @see SpannableStringBuilder.inSpans
+ */
+inline fun SpannableStringBuilder.icon(
+        draw: Drawable,
+        size: Int,
+        builderAction: SpannableStringBuilder.() -> Unit
+) = inSpans(ImageSpan(draw.apply { setBounds(0, 0, size, size) }), builderAction = builderAction)
+
+/**
+ * Wrap appended text in [builderAction] in a [CenterAlignImageSpan].
+ *
+ * @see SpannableStringBuilder.inSpans
+ */
+inline fun SpannableStringBuilder.iconAlign(
+        draw: Drawable,
+        size: Int,
+        builderAction: SpannableStringBuilder.() -> Unit
+) = inSpans(CenterAlignImageSpan(draw.apply { setBounds(0, 0, size, size) }), builderAction = builderAction)

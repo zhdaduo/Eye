@@ -6,10 +6,6 @@
     <data>
 
         <variable
-            name="timeText"
-            type="String" />
-
-        <variable
             name="coverUrl"
             type="String" />
 
@@ -90,27 +86,13 @@
             app:layout_constraintStart_toStartOf="@id/guideline1"
             app:layout_constraintTop_toBottomOf="@id/tv_description" />
 
-        <com.mor.eye.view.home.community.EmptyControlVideo
+        <com.mor.eye.ui.video.EmptyControlVideoPlayer
             android:id="@+id/video_item_player"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_190"
             app:layout_constraintEnd_toEndOf="@id/guideline2"
             app:layout_constraintStart_toStartOf="@id/guideline1"
             app:layout_constraintTop_toBottomOf="@id/video_tag_group" />
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp_8"
-            android:layout_marginBottom="@dimen/dp_6"
-            android:background="@drawable/shape_tv_time"
-            android:text="@{timeText}"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/sp_14"
-            app:layout_constraintBottom_toBottomOf="@id/video_item_player"
-            app:layout_constraintEnd_toEndOf="@id/video_item_player"
-            tools:text="@sample/common.json/data/time" />
 
         <include
             android:id="@+id/footer_view"

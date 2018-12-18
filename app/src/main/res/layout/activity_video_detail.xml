@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.mor.eye.view.home.community.SampleCoverVideo
+    <com.mor.eye.ui.video.EyepetizerVideoPlayer
         android:id="@+id/video_player"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_210" />
+        android:layout_height="@dimen/dp_40" />
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/iv_background"
@@ -25,6 +25,6 @@
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/video_player"
-        tools:listitem="@layout/view_holder_small_card_white" />
+        tools:listitem="@layout/view_holder_small_card" />
 
 </android.support.constraint.ConstraintLayout>

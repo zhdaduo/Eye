@@ -1,10 +1,13 @@
 package com.mor.eye.util.ktx
 
-import android.arch.lifecycle.*
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.MediatorLiveData
+import android.arch.lifecycle.MutableLiveData
 import android.support.annotation.MainThread
 import android.util.Log
-import java.util.*
+import java.util.Objects
 import java.util.concurrent.atomic.AtomicBoolean
 
 inline fun <T> LiveData<T>.observeK(owner: LifecycleOwner, crossinline observer: (T?) -> Unit) {

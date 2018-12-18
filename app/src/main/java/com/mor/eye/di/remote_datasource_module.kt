@@ -9,8 +9,11 @@ import com.mor.eye.di.DataSourceProperties.SERVER_URL
 import com.mor.eye.repository.EyeDataSource
 import com.mor.eye.repository.remote.CacheInterceptor
 import com.mor.eye.repository.remote.RxErrorHandlingCallAdapterFactory
+import com.mor.eye.util.AppUtils
 import okhttp3.Cache
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module.module
 import retrofit2.Retrofit
@@ -41,16 +44,18 @@ fun createOkHttpClient(): OkHttpClient {
         builder.addInterceptor(httpLoggingInterceptor)
     }
 
+    builder.addInterceptor(addQueryParameterInterceptor())
+    builder.addInterceptor(addHeaderInterceptor())
     builder.addInterceptor(CacheInterceptor())
     builder.addNetworkInterceptor(CacheInterceptor())
     builder = StethoUtils.addStethoNetWork(builder)
 
     builder.cache(cache)
-    builder.connectTimeout(10, TimeUnit.SECONDS)
-    builder.readTimeout(20, TimeUnit.SECONDS)
-    builder.writeTimeout(20, TimeUnit.SECONDS)
+    builder.connectTimeout(60L, TimeUnit.SECONDS)
+    builder.readTimeout(60L, TimeUnit.SECONDS)
+    builder.writeTimeout(60L, TimeUnit.SECONDS)
 
-    builder.retryOnConnectionFailure(true)
+    builder.retryOnConnectionFailure(false)
 
     return builder.build()
 }
@@ -62,4 +67,34 @@ inline fun <reified T> createWebService(okHttpClient: OkHttpClient): T {
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create()).build()
     return retrofit.create(T::class.java)
+}
+
+/**
+ * 设置公共参数
+ */
+private fun addQueryParameterInterceptor(): Interceptor {
+    return Interceptor { chain ->
+        val originalRequest = chain.request()
+        val request: Request
+        val modifiedUrl = originalRequest.url().newBuilder()
+                .addQueryParameter("udid", "5394cda42d75480cb47942affe0feb45339343a4")
+                .addQueryParameter("deviceModel", AppUtils.getMobileModel())
+                .build()
+        request = originalRequest.newBuilder().url(modifiedUrl).build()
+        chain.proceed(request)
+    }
+}
+
+/**
+ * 设置头
+ */
+private fun addHeaderInterceptor(): Interceptor {
+    return Interceptor { chain ->
+        val originalRequest = chain.request()
+        val requestBuilder = originalRequest.newBuilder()
+                //.header("token", token)
+                .method(originalRequest.method(), originalRequest.body())
+        val request = requestBuilder.build()
+        chain.proceed(request)
+    }
 }

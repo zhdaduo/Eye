@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="isTextDefaultColor"
+            type="boolean" />
+
+        <variable
             name="timeText"
             type="String" />
 
@@ -40,7 +44,7 @@
             android:layout_width="@dimen/dp_180"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            app:withCorner="@{feedUrl}"
+            app:imageRound="@{feedUrl}"
             tools:srcCompat="@tools:sample/avatars" />
 
         <android.support.v7.widget.AppCompatTextView
@@ -66,12 +70,12 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:text="@{titleText}"
+            android:textColor="@{isTextDefaultColor? @color/main_text_color : @color/colorWhite}"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_cover"
             app:layout_constraintTop_toTopOf="@id/iv_cover"
-            tools:text="@sample/common.json/data/title"
-            tools:textColor="@android:color/black" />
+            tools:text="@sample/common.json/data/title" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_description"
@@ -82,12 +86,12 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="@{descriptionText}"
+            android:textColor="@{isTextDefaultColor? @color/text_color : @color/colorWhite}"
             app:layout_constraintBottom_toBottomOf="@id/iv_cover"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_cover"
             app:visibleIfNotNull="@{descriptionText}"
-            tools:text="@sample/common.json/data/description"
-            tools:textColor="@android:color/black" />
+            tools:text="@sample/common.json/data/description" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

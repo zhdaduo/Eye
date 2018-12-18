@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.mor.eye.R
-import com.mor.eye.ui.EndlessRecyclerViewScrollListener
-import com.mor.eye.ui.ProgressTimeLatch
+import com.mor.eye.ui.recyclerview.EndlessRecyclerViewScrollListener
+import com.mor.eye.ui.recyclerview.ProgressTimeLatch
 
 abstract class BaseTabFragment : LazyFragment() {
     lateinit var recyclerView: EpoxyRecyclerView

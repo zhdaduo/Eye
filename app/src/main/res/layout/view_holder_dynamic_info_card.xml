@@ -69,9 +69,9 @@
             android:layout_centerVertical="true"
             android:onClick="@{authorClick}"
             android:scaleType="centerCrop"
+            app:imageCircle="@{avatarUrl}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:withCircle="@{avatarUrl}"
             tools:srcCompat="@tools:sample/avatars" />
 
 
@@ -147,7 +147,7 @@
                 android:layout_width="@dimen/dp_150"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                app:withCorner="@{feedUrl}"
+                app:imageRound="@{feedUrl}"
                 tools:layout_editor_absoluteX="13dp"
                 tools:layout_editor_absoluteY="13dp"
                 tools:srcCompat="@tools:sample/avatars" />

@@ -3,27 +3,23 @@ package com.mor.eye.view.detail.fragment
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.mor.eye.repository.EyeRepository
-import com.mor.eye.repository.data.ItemListBean
 import com.mor.eye.ui.Status
 import com.mor.eye.ui.UiResource
-import com.mor.eye.util.StringUtils
 import com.mor.eye.util.ktx.SingleLiveEvent
-import com.mor.eye.util.other.DataSourceConstant
-import com.mor.eye.util.other.TagTabConstant.Companion.TAG_DYNAMICS
-import com.mor.eye.util.other.TagTabConstant.Companion.TAG_VIDEOS
-import com.mor.eye.util.rx.SchedulerProvider
 import com.mor.eye.util.rx.with
 import com.mor.eye.view.base.AbstractViewModel
+import com.mor.eye.util.rx.SchedulerProvider
+import com.mor.eye.repository.data.ItemListBean
 
 class TagsDetailIndexViewModel(private val repository: EyeRepository, private val scheduler: SchedulerProvider) : AbstractViewModel() {
     val uiEvent = SingleLiveEvent<UiResource>()
     private val _uiLoadData = MutableLiveData<List<ItemListBean>>()
     private val _uiLoadMoreData = MutableLiveData<List<ItemListBean>>()
 
-    private var stringHashMap = HashMap<String, String?>()
     private var enableScrollToEnd = true
+    private var nextPageUrl: String? = null
 
-    var tabType = TAG_VIDEOS
+    var tabType = 0
         set(value) {
             if (value != field) {
                 field = value
@@ -58,7 +54,7 @@ class TagsDetailIndexViewModel(private val repository: EyeRepository, private va
                                 if (findBean.nextPageUrl == null) {
                                     enableScrollToEnd = false
                                 } else {
-                                    validatePageUrl(tabType, findBean.nextPageUrl)
+                                    nextPageUrl = findBean.nextPageUrl
                                 }
                             },
                             { t ->
@@ -71,7 +67,7 @@ class TagsDetailIndexViewModel(private val repository: EyeRepository, private va
     override fun onListScrolledToEnd() {
         if (enableScrollToEnd) {
             launch {
-                repository.getMoreTagDetailData(tabType, id, stringHashMap)
+                repository.getLoadMoreData(nextPageUrl!!)
                         .doOnSubscribe { uiEvent.postValue(UiResource(Status.LOADING_MORE)) }
                         .with(scheduler)
                         .subscribe(
@@ -84,7 +80,7 @@ class TagsDetailIndexViewModel(private val repository: EyeRepository, private va
                                     if (findBean.nextPageUrl == null) {
                                         enableScrollToEnd = false
                                     } else {
-                                        validatePageUrl(tabType, findBean.nextPageUrl)
+                                        nextPageUrl = findBean.nextPageUrl
                                     }
                                 },
                                 { t ->
@@ -95,13 +91,5 @@ class TagsDetailIndexViewModel(private val repository: EyeRepository, private va
         } else {
             uiEvent.postValue(UiResource(Status.NO_MORE))
         }
-    }
-
-    private fun validatePageUrl(tabType: String, url: String) = when (tabType) {
-        TAG_VIDEOS, TAG_DYNAMICS -> {
-            stringHashMap[DataSourceConstant.START] = StringUtils.urlRequest(url)[DataSourceConstant.START]
-            stringHashMap[DataSourceConstant.NUM] = StringUtils.urlRequest(url)[DataSourceConstant.NUM]
-        }
-        else -> throw IllegalArgumentException("tag url parse invalid")
     }
 }

@@ -3,7 +3,9 @@ package com.mor.eye.util.glide
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.support.annotation.DrawableRes
+import android.support.v4.content.ContextCompat
 import android.widget.ImageView
+import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -40,6 +42,19 @@ fun ImageView.loadPlaceWithIcon(ctx: Context, url: String, defaultIconId: Int) {
             .into(this)
 }
 
+fun ImageView.loadImageBlur(ctx: Context, url: String) {
+    val requestOption = RequestOptions().
+            diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .dontAnimate()
+            .placeholder(ColorDrawable(DisplayUtils.getColor(ctx, R.color.detail_bg2)))
+
+    GlideApp.with(ctx)
+            .load(url)
+            .apply(requestOption)
+            .into(this)
+}
+
 fun ImageView.loadImage(ctx: Context, url: String) {
     GlideApp.with(ctx).asDrawable()
             .load(url)
@@ -50,7 +65,7 @@ fun ImageView.loadImage(ctx: Context, url: String) {
             .into(this)
 }
 
-fun ImageView.loadWithCircle(ctx: Context, url: String) {
+fun ImageView.loadImageCircle(ctx: Context, url: String) {
     GlideApp.with(ctx).asDrawable()
             .load(url)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -66,7 +81,7 @@ fun ImageView.loadWithCircle(ctx: Context, url: String) {
             .into(this)
 }
 
-fun ImageView.loadWithCorner(ctx: Context, url: String, radius: Int) {
+fun ImageView.loadImageRound(ctx: Context, url: String, radius: Int) {
     GlideApp.with(ctx).asDrawable()
             .load(url)
             .transition(withCrossFade())
@@ -108,7 +123,7 @@ fun ImageView.loadPlaceWithIcon(view: ImageView, url: String, defaultIconId: Int
             .into(this)
 }
 
-fun ImageView.loadWithCircle(view: ImageView, url: String) {
+fun ImageView.loadImageCircle(view: ImageView, url: String) {
     GlideApp.with(view).asDrawable()
             .load(url)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -124,7 +139,7 @@ fun ImageView.loadWithCircle(view: ImageView, url: String) {
             .into(this)
 }
 
-fun ImageView.loadWithCorner(view: ImageView, url: String, radius: Int) {
+fun ImageView.loadImageRound(view: ImageView, url: String, radius: Int) {
     GlideApp.with(view).asDrawable()
             .load(url)
             .transition(withCrossFade())

@@ -35,23 +35,13 @@ class ViewTypeConstant {
 
 class DataSourceConstant {
     companion object {
-        const val FIND_START = "findStart"
-        const val FIND_NUM = "findNum"
-        const val REC_PAGE = "recPage"
-        const val REC_IS_TAG = "recIsTag"
-        const val REC_AD_INDEX = "recAdIndex"
-        const val DAY_DATE = "dayDate"
-        const val DAY_NUM = "dayNum"
-        const val COM_START = "comStart"
-        const val TAB_START = "tabStart"
-        const val TAB_NUM = "tabNum"
-        const val START = "start"
-        const val NUM = "num"
-        const val STRATEGY = "strategy"
-        const val PAGE = "page"
-        const val NEEDFILTER = "needFilter"
 
-        const val VIDEO_DATA = "VIDEO_DATA"
+        const val VIDEO_ID = "VIDEO_ID"
+        const val VIDEO_FEED_URL = "VIDEO_FEED_URL"
+        const val VIDEO_PLAY_URL = "VIDEO_PLAY_URL"
+        const val VIDEO_TITLE = "VIDEO_TITLE"
+        const val VIDEO_BLUR_URL = "VIDEO_BLUR_URL"
+
         const val EYEPETIZER = "eyepetizer://webview/"
     }
 }
@@ -90,28 +80,12 @@ class WebArgumentConstant {
     }
 }
 
-class TabPrefsConstant {
-    companion object {
-        const val PREFS_FILENAME = "tab.prefs"
-        const val AUTHOR_TAB = "tab.author"
-        const val Category_TAB = "tab.category"
-        const val Tag_TAB = "tab.tag"
-    }
-}
-
 class AuthorTabConstant {
     companion object {
         const val AUTHOR_INDEX = "首页"
         const val AUTHOR_WORKS = "作品"
         const val AUTHOR_PLAY_LIST = "专辑"
         const val AUTHOR_DYNAMICS = "动态"
-    }
-}
-
-class TagTabConstant {
-    companion object {
-        const val TAG_VIDEOS = "TAG_VIDEOS"
-        const val TAG_DYNAMICS = "TAG_DYNAMICS"
     }
 }
 

@@ -3,8 +3,8 @@ package com.mor.eye.util.databinding
 import android.databinding.BindingAdapter
 import android.view.View
 import android.widget.ImageView
-import com.mor.eye.util.glide.loadWithCircle
-import com.mor.eye.util.glide.loadWithCorner
+import com.mor.eye.util.glide.loadImageCircle
+import com.mor.eye.util.glide.loadImageRound
 
 @BindingAdapter("visibleIfNull")
 fun visibleIfNull(view: View, target: String?) {
@@ -21,14 +21,14 @@ fun visibleIfTrue(view: View, isShow: Boolean) {
     view.visibility = if (isShow) View.VISIBLE else View.GONE
 }
 
-@BindingAdapter("withCircle")
-fun loadWithCircle(view: ImageView, url: String) {
-    view.loadWithCircle(view, url)
+@BindingAdapter("imageCircle")
+fun loadImageCircle(view: ImageView, url: String) {
+    view.loadImageCircle(view, url)
 }
 
-@BindingAdapter("withCorner")
-fun loadWithCorner(view: ImageView, url: String) {
-    view.loadWithCorner(view, url, 10)
+@BindingAdapter("imageRound")
+fun loadImageRound(view: ImageView, url: String) {
+    view.loadImageRound(view, url, 10)
 }
 
 @BindingAdapter("removeIf")

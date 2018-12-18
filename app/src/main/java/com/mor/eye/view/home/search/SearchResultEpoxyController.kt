@@ -1,80 +1,64 @@
 package com.mor.eye.view.home.search
 
 import android.content.Context
-import com.airbnb.epoxy.EpoxyController
-import com.mor.eye.*
 import com.mor.eye.repository.data.ItemListBean
-import com.mor.eye.util.StringUtils
-import com.mor.eye.util.other.ViewTypeConstant
-import com.mor.eye.util.other.showToast
+import com.mor.eye.view.base.AbstractEpoxyController
 import com.mor.eye.view.base.Callbacks
 
-class SearchResultEpoxyController(private val ctx: Context, private val callbacks: Callbacks) : EpoxyController() {
-    private var showEmpty = false
-    private var showEnd = false
+class SearchResultEpoxyController(private val ctx: Context, private val callbacks: Callbacks) : AbstractEpoxyController() {
+    private var isLoadMore = false
+    private var isEmpty = false
+    private var isNoMore = false
     private var loadData = mutableListOf<ItemListBean>()
     override fun buildModels() {
-        var i: Long = 0
-        if (showEmpty) {
-            emptyState {
-                id("empty_view")
-            }
-        }
-        if (showEnd) {
-            textEnd {
-                id("no_more_view")
-            }
-        }
-        loadData.forEach { item ->
-            if (item.type == ViewTypeConstant.TEXT_CARD && item.data.text != "社区精选" && item.data.text != "查看全部热门排行") {
-                queryResultHeader {
-                    id(i++)
-                    headerText(item.data.text)
-                    click { _ -> ctx.showToast("查看全部") }
-                }
-            }
+        var i = 0L
 
-            if (item.type == ViewTypeConstant.BRIEF_CARD) {
-                briefCard {
-                    id(i++)
-                    pictureUrl(item.data.icon)
-                    titleText(item.data.title)
-                    descriptionText(item.data.description)
-                    showCategoryIfTrue(false)
-                    showFocusIfTrue(true)
-                    categoryClick { _ -> callbacks.onCategoryClickListener(item.data.id, item.data.icon) }
-                }
-            }
+        if (isEmpty) {
+            buildStatusEmpty(i++).addTo(this)
+        } else {
 
-            if (item.type == ViewTypeConstant.FOLLOW_CARD) {
-                followCarousel {
-                    id(i++)
-                    timeText(StringUtils.durationFormat(item.data.content?.data?.duration!!))
-                    titleText(item.data.header?.title)
-                    descriptionText(String.format(ctx.getString(R.string.follow_description), item.data.content.data.author?.name, item.data.content.data.category))
-                    feedUrl(item.data.content.data.cover?.feed)
-                    coverUrl(item.data.header?.icon)
-                    showAdIfTrue(item.type == ViewTypeConstant.BANNER3)
-                    showTimeIfTrue(true)
-                    authorClick { _ -> callbacks.onAuthorClickListener(item.data.content.data.author?.id!!, "PGC") }
-                    videoClick { _ -> callbacks.onVideoClickListener(item.data.content.data.id) }
+            loadData.forEach { item ->
+                if (isTextCard(item) && item.data.text != "社区精选" && item.data.text != "查看全部热门排行") {
+                    buildHeaderTextCard(callbacks, ctx, i++, item.data.text)
+                            .addTo(this)
+                }
+
+                if (isBriefCard(item)) {
+                    buildBriefCard(callbacks, item, i++, false)
+                            .addTo(this)
+                }
+
+                if (isFollowCard(item)) {
+                    buildFollowCard(callbacks, ctx, item, i++, false)
+                            .addTo(this)
                 }
             }
         }
+
+        buildStatusLoading(i++).addIf(isLoadMore, this)
+
+        buildStatusNoMore(i++).addIf(isNoMore, this)
     }
 
     fun addLoadData(loadItems: List<ItemListBean>) {
         loadData.addAll(loadItems)
+        isLoadMore = false
         requestModelBuild()
     }
 
     fun showEmpty() {
-        showEmpty = true
+        isEmpty = true
         requestModelBuild()
     }
 
     fun showEnd() {
-        showEnd = true
+        isNoMore = true
+        isLoadMore = false
+        requestModelBuild()
+    }
+
+    fun showFooter() {
+        isLoadMore = true
         requestModelBuild()
     }
 }

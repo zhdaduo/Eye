@@ -5,9 +5,12 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.StateListDrawable
 import android.support.annotation.LayoutRes
+import android.support.v4.view.ViewPager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -88,6 +91,4 @@ fun startAnimation(context: Context, view: ImageView) {
 
 var View.visible: Boolean
     get() = visibility == View.VISIBLE
-    set(value) {
-        visibility = if (value) View.VISIBLE else View.GONE
-    }
+    set(value) { visibility = if (value) View.VISIBLE else View.GONE }

@@ -4,32 +4,31 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PixelFormat
 import android.os.Bundle
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.webkit.WebSettings
+import android.view.View
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.LinearLayout
 import com.mor.eye.R
-import com.mor.eye.util.StringUtils
 import com.mor.eye.util.other.WebArgumentConstant.Companion.WEB_URL
-import com.mor.eye.util.other.show
 import com.mor.eye.util.other.startKActivity
-import com.mor.eye.util.other.unsafeLazy
-import com.mor.eye.view.base.BaseActivity
 import java.io.UnsupportedEncodingException
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.webkit.WebSettings
+import android.webkit.WebViewClient
+import android.widget.TextView
+import com.mor.eye.util.StringUtils
+import com.mor.eye.util.other.unsafeLazy
+import com.mor.eye.view.base.BaseSupportActivity
 
-class WebDetailActivity : BaseActivity() {
+class WebDetailActivity : BaseSupportActivity() {
     private val url by unsafeLazy { intent.getStringExtra(WEB_URL) }
     private lateinit var mWebView: WebView
-    override fun getLayout(): Int = R.layout.activity_web_detail
+
+    override fun getContentViewResId(): Int = R.layout.activity_web_detail
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // 视频为了避免闪屏和透明问题
         window.setFormat(PixelFormat.TRANSLUCENT)
-    }
-
-    override fun init() {
         val webUrl = getURLDecoderString(url)
         initWebToolbar(webUrl)
         initWebView()
@@ -37,13 +36,14 @@ class WebDetailActivity : BaseActivity() {
     }
 
     private fun initWebToolbar(webUrl: String) {
-        initToolbar()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        val tvToolbarTitle = rootView?.findViewById<TextView>(R.id.toolbar_title)
+        tvToolbarTitle?.visibility = View.VISIBLE
+        tvToolbarTitle?.text = StringUtils.formatUrl(webUrl)
+    }
 
-        tvBoldTitle.apply {
-            show()
-            text = StringUtils.formatUrl(webUrl)
-            isSelected = true
-        }
+    override fun showToolBar(): Boolean {
+        return true
     }
 
     private fun initWebView() {

@@ -1,6 +1,7 @@
 package com.mor.eye.view.detail.activity
 
 import android.content.Context
+import android.os.Bundle
 import com.mor.eye.R
 import com.mor.eye.util.ktx.observeK
 import com.mor.eye.util.other.CategoryArgumentConstant.Companion.CATEGORY_DEFAULT_ICON
@@ -19,6 +20,17 @@ class CategoriesDetailActivity : DetailBaseActivity() {
     private val iconUrl by unsafeLazy { intent.getStringExtra(CATEGORY_DEFAULT_ICON) }
     private val id by unsafeLazy { intent.getStringExtra(CATEGORY_ID) }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        model.id = id
+        model.refresh()
+
+        model.uiLoadData.observeK(this) { uiLoadData ->
+            val categoryInfoBean = uiLoadData?.categoryInfo!!
+            initUi(categoryInfoBean.follow.isFollowed, categoryInfoBean.name, categoryInfoBean.headerImage, categoryInfoBean.description)
+        }
+    }
+
     override fun getPages(): FragmentPagerItems {
         val tabs = resources.getStringArray(R.array.categories_tabs)
 
@@ -28,16 +40,6 @@ class CategoriesDetailActivity : DetailBaseActivity() {
             }
         }
         return pageItems
-    }
-
-    override fun observeViewModel() {
-        model.id = id
-        model.refresh()
-
-        model.uiLoadData.observeK(this) { uiLoadData ->
-            val categoryInfoBean = uiLoadData?.categoryInfo!!
-            initUi(categoryInfoBean.follow.isFollowed, categoryInfoBean.name, categoryInfoBean.headerImage, categoryInfoBean.description)
-        }
     }
 
     companion object {

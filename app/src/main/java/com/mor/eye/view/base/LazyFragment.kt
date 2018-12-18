@@ -14,7 +14,11 @@ import com.mor.eye.repository.remote.RetrofitException
 import com.mor.eye.util.ktx.doOnPreDraw
 import com.mor.eye.util.other.DataSourceConstant
 import com.mor.eye.util.other.showToast
-import com.mor.eye.view.detail.activity.*
+import com.mor.eye.view.detail.activity.CategoriesDetailActivity
+import com.mor.eye.view.detail.activity.TagsDetailActivity
+import com.mor.eye.view.detail.activity.AuthorDetailActivity
+import com.mor.eye.view.detail.activity.VideoDetailActivity
+import com.mor.eye.view.detail.activity.WebDetailActivity
 import com.mor.eye.view.gallery.GalleryActivity
 
 abstract class LazyFragment : Fragment() {
@@ -71,7 +75,7 @@ abstract class LazyFragment : Fragment() {
         setCallback {
             categoryClick { id, iconUrl -> CategoriesDetailActivity.open(requireActivity(), id.toString(), iconUrl) }
             authorClick { id, userType -> AuthorDetailActivity.open(requireActivity(), id.toString(), userType) }
-            videoClick { videoData -> VideoDetailActivity.open(requireActivity(), videoData) }
+            videoClick { videoId, feedUrl, playUrl, blurUrl, videoTitle -> VideoDetailActivity.open(requireActivity(), videoId, feedUrl, playUrl, blurUrl,videoTitle ) }
             dynamicInfoClick { requireActivity().showToast("dynamicInfo") }
             bannerClick { url ->
                 if (url.contains(DataSourceConstant.EYEPETIZER)) {

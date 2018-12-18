@@ -7,7 +7,6 @@ import com.mor.eye.repository.data.ItemListBean
 import com.mor.eye.repository.local.RecentSearch
 import com.mor.eye.ui.Status
 import com.mor.eye.ui.UiResource
-import com.mor.eye.util.StringUtils
 import com.mor.eye.util.ktx.SingleLiveEvent
 import com.mor.eye.util.rx.SchedulerProvider
 import com.mor.eye.util.rx.with
@@ -19,10 +18,9 @@ class SearchViewModel(private val repository: EyeRepository, private val schedul
     private val _uiListKeyWordData = MutableLiveData<List<String>>()
     private val _uiListHistoryData = MutableLiveData<List<String>>()
 
-    private var start: String? = null
-    private var num: String? = null
-    private var query: String? = null
+
     private var enableScrollToEnd = true
+    private var nextPageUrl: String? = null
 
     val uiLoadData: LiveData<List<ItemListBean>>
         get() = _uiLoadData
@@ -74,18 +72,19 @@ class SearchViewModel(private val repository: EyeRepository, private val schedul
     fun getQueryData(query: String) {
         launch {
             repository.getQueryData(query)
+                    .doOnSubscribe { uiEvent.postValue(UiResource(Status.REFRESHING)) }
                     .with(scheduler)
                     .subscribe(
                             { findBean ->
                                 saveKeyHistory(query)
-                                this.query = query
                                 if (findBean == null) uiEvent.postValue(UiResource(Status.NO_DATA))
                                 else {
                                     _uiLoadData.postValue(findBean.itemList)
                                 }
-                                findBean.nextPageUrl?.let { url ->
-                                    start = StringUtils.urlRequest(url)["start"]
-                                    num = StringUtils.urlRequest(url)["num"]
+                                if (findBean.nextPageUrl == null) {
+                                    enableScrollToEnd = false
+                                } else {
+                                    nextPageUrl = findBean.nextPageUrl
                                 }
                             }, {}
                     )
@@ -95,7 +94,8 @@ class SearchViewModel(private val repository: EyeRepository, private val schedul
     fun onListScrolledToEnd() {
         if (enableScrollToEnd) {
             launch {
-                repository.getMoreQueryData(start!!, num!!, query!!)
+                repository.getLoadMoreData(nextPageUrl!!)
+                        .doOnSubscribe { uiEvent.postValue(UiResource(Status.LOADING_MORE)) }
                         .with(scheduler)
                         .subscribe(
                                 { findBean ->
@@ -107,10 +107,7 @@ class SearchViewModel(private val repository: EyeRepository, private val schedul
                                     if (findBean.nextPageUrl == null) {
                                         enableScrollToEnd = false
                                     } else {
-                                        findBean.nextPageUrl.let { url ->
-                                            start = StringUtils.urlRequest(url)["start"]
-                                            num = StringUtils.urlRequest(url)["num"]
-                                        }
+                                        nextPageUrl = findBean.nextPageUrl
                                     }
                                 },
                                 {}

@@ -27,9 +27,7 @@ class TagsDetailViewModel(private val repository: EyeRepository, private val sch
                     .with(scheduler)
                     .subscribe(
                             { bean ->
-                                if (bean != null) {
-                                    _uiLoadData.postValue(bean)
-                                }
+                                if (bean != null) { _uiLoadData.postValue(bean) }
                             }, {}
                     )
         }

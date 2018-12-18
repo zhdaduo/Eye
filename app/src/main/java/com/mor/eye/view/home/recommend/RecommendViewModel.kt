@@ -17,12 +17,9 @@ class RecommendViewModel(private val repository: EyeRepository, private val sche
     private val _uiLoadData = MutableLiveData<List<ItemListBean>>()
     private val _uiLoadMoreData = MutableLiveData<UILoadMoreData>()
 
-    private var page: String? = null
-    private var isTag: String? = null
-    private var adIndex: String? = null
-
-    private val id = -2
+    private val categoryType = -2
     private var enableScrollToEnd = true
+    private var nextPageUrl: String? = null
 
     val uiLoadData: LiveData<List<ItemListBean>>
         get() = _uiLoadData
@@ -31,7 +28,7 @@ class RecommendViewModel(private val repository: EyeRepository, private val sche
 
     override fun refresh() {
         launch {
-            repository.getRecommendData()
+            repository.getCommonTabData(categoryType)
                     .doOnSubscribe { uiEvent.postValue(UiResource(Status.REFRESHING)) }
                     .with(scheduler)
                     .subscribe(
@@ -44,11 +41,7 @@ class RecommendViewModel(private val repository: EyeRepository, private val sche
                                 if (findBean.nextPageUrl.isNullOrBlank()) {
                                     enableScrollToEnd = false
                                 } else {
-                                    findBean.nextPageUrl.let { url ->
-                                        page = StringUtils.urlRequest(url!!)["page"]
-                                        isTag = StringUtils.urlRequest(url)["isTag"]
-                                        adIndex = StringUtils.urlRequest(url)["adIndex"]
-                                    }
+                                    nextPageUrl = findBean.nextPageUrl
                                 }
                             },
                             { t ->
@@ -61,7 +54,7 @@ class RecommendViewModel(private val repository: EyeRepository, private val sche
     override fun onListScrolledToEnd() {
         if (enableScrollToEnd) {
             launch {
-                repository.getMoreRecommendData(page!!, isTag!!, adIndex!!)
+                repository.getLoadMoreData(nextPageUrl!!)
                         .doOnSubscribe { uiEvent.postValue(UiResource(Status.LOADING_MORE)) }
                         .with(scheduler)
                         .subscribe(
@@ -70,16 +63,12 @@ class RecommendViewModel(private val repository: EyeRepository, private val sche
                                     if (findBean == null) {
                                         uiEvent.postValue(UiResource(Status.NO_MORE))
                                     } else {
-                                        _uiLoadMoreData.postValue(UILoadMoreData(findBean.itemList, isTag!!))
+                                        _uiLoadMoreData.postValue(UILoadMoreData(findBean.itemList, StringUtils.urlRequest(findBean.nextPageUrl!!)["isTag"]!!))
                                     }
                                     if (findBean.nextPageUrl == null) {
                                         enableScrollToEnd = false
                                     } else {
-                                        findBean.nextPageUrl.let { url ->
-                                            page = StringUtils.urlRequest(url)["page"]
-                                            isTag = StringUtils.urlRequest(url)["isTag"]
-                                            adIndex = StringUtils.urlRequest(url)["adIndex"].orEmpty()
-                                        }
+                                        nextPageUrl = findBean.nextPageUrl
                                     }
                                 },
                                 { t ->

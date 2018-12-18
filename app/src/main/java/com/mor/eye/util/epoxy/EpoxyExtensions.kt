@@ -1,6 +1,10 @@
 package com.mor.eye.util.epoxy
 
-import com.airbnb.epoxy.*
+import com.airbnb.epoxy.EpoxyRecyclerView
+import com.airbnb.epoxy.EpoxyController
+import com.airbnb.epoxy.CarouselModelBuilder
+import com.airbnb.epoxy.CarouselModel_
+import com.airbnb.epoxy.EpoxyModel
 
 /** Easily add models to an EpoxyRecyclerView, the same way you would in a buildModels method of EpoxyController.
  *

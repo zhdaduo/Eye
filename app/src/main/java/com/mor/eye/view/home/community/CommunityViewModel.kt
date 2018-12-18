@@ -6,9 +6,7 @@ import com.mor.eye.repository.EyeRepository
 import com.mor.eye.repository.data.ItemListBean
 import com.mor.eye.ui.Status
 import com.mor.eye.ui.UiResource
-import com.mor.eye.util.StringUtils
 import com.mor.eye.util.ktx.SingleLiveEvent
-import com.mor.eye.util.other.DataSourceConstant.Companion.COM_START
 import com.mor.eye.util.rx.SchedulerProvider
 import com.mor.eye.util.rx.with
 import com.mor.eye.view.base.AbstractViewModel
@@ -18,9 +16,9 @@ class CommunityViewModel(private val repository: EyeRepository, private val sche
     private val _uiLoadData = MutableLiveData<List<ItemListBean>>()
     private val _uiLoadMoreData = MutableLiveData<List<ItemListBean>>()
 
-    private var stringHashMap = HashMap<String, String?>()
-    private val id = -4
+    private val categoryType = -4
     private var enableScrollToEnd = true
+    private var nextPageUrl: String? = null
 
     val uiLoadData: LiveData<List<ItemListBean>>
         get() = _uiLoadData
@@ -29,7 +27,7 @@ class CommunityViewModel(private val repository: EyeRepository, private val sche
 
     override fun refresh() {
         launch {
-            repository.getCommonTabData(id)
+            repository.getCommonTabData(categoryType)
                     .doOnSubscribe { uiEvent.postValue(UiResource(Status.REFRESHING)) }
                     .with(scheduler)
                     .subscribe(
@@ -42,9 +40,7 @@ class CommunityViewModel(private val repository: EyeRepository, private val sche
                                 if (findBean.nextPageUrl == null) {
                                     enableScrollToEnd = false
                                 } else {
-                                    findBean.nextPageUrl.let { url ->
-                                        stringHashMap[COM_START] = StringUtils.urlRequest(url)["start"]
-                                    }
+                                    nextPageUrl = findBean.nextPageUrl
                                 }
                             },
                             { t ->
@@ -57,7 +53,7 @@ class CommunityViewModel(private val repository: EyeRepository, private val sche
     override fun onListScrolledToEnd() {
         if (enableScrollToEnd) {
             launch {
-                repository.getMoreCommonTabData(stringHashMap, id)
+                repository.getLoadMoreData(nextPageUrl!!)
                         .doOnSubscribe { uiEvent.postValue(UiResource(Status.LOADING_MORE)) }
                         .with(scheduler)
                         .subscribe(
@@ -71,9 +67,7 @@ class CommunityViewModel(private val repository: EyeRepository, private val sche
                                     if (findBean.nextPageUrl.isNullOrBlank()) {
                                         enableScrollToEnd = false
                                     } else {
-                                        findBean.nextPageUrl.let { url ->
-                                            stringHashMap[COM_START] = StringUtils.urlRequest(url!!)["start"]
-                                        }
+                                        nextPageUrl = findBean.nextPageUrl
                                     }
                                 },
                                 { t ->

@@ -1,5 +1,6 @@
 package com.mor.eye.repository.remote
 
+import android.support.annotation.IntDef
 import android.util.Log
 import okhttp3.ResponseBody
 import retrofit2.Converter

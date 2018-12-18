@@ -12,7 +12,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class TagsDetailIndexFragment : DetailIndexBaseFragment() {
     private val model: TagsDetailIndexViewModel by viewModel()
-    private val tabType by unsafeLazy { arguments!![TAG_TAB_TYPE] as String }
+    private val tabType by unsafeLazy { arguments!![TAG_TAB_TYPE] as Int }
     private val id by unsafeLazy { arguments!![TAG_ID] as String }
 
     override fun observeViewModel() {
@@ -55,16 +55,16 @@ class TagsDetailIndexFragment : DetailIndexBaseFragment() {
 
     companion object {
 
-        fun newInstance(id: String, tabType: String): TagsDetailIndexFragment {
+        fun newInstance(id: String, tabType: Int): TagsDetailIndexFragment {
             val fragment = TagsDetailIndexFragment()
             fragment.arguments = arguments(id, tabType)
             return fragment
         }
 
-        fun arguments(id: String, tabType: String): Bundle {
+        fun arguments(id: String, tabType: Int): Bundle {
             return Bundler()
                     .putString(TAG_ID, id)
-                    .putString(TAG_TAB_TYPE, tabType)
+                    .putInt(TAG_TAB_TYPE, tabType)
                     .get()
         }
     }

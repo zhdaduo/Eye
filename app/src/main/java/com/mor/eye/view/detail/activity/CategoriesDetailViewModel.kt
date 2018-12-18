@@ -27,9 +27,7 @@ class CategoriesDetailViewModel(private val repository: EyeRepository, private v
                     .with(scheduler)
                     .subscribe(
                             { bean ->
-                                if (bean != null) {
-                                    _uiLoadData.postValue(bean)
-                                }
+                                if (bean != null) { _uiLoadData.postValue(bean) }
                             }, {}
                     )
         }

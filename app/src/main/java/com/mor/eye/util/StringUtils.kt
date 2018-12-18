@@ -5,11 +5,6 @@ import com.mor.eye.R
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
-import kotlin.collections.HashMap
-import kotlin.collections.Map
-import kotlin.collections.dropLastWhile
-import kotlin.collections.set
-import kotlin.collections.toTypedArray
 
 object StringUtils {
     fun durationFormat(duration: Int): String {

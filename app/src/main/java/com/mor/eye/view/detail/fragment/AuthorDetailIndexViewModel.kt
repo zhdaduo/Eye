@@ -6,14 +6,7 @@ import com.mor.eye.repository.EyeRepository
 import com.mor.eye.repository.data.ItemListBean
 import com.mor.eye.ui.Status
 import com.mor.eye.ui.UiResource
-import com.mor.eye.util.StringUtils
 import com.mor.eye.util.ktx.SingleLiveEvent
-import com.mor.eye.util.other.AuthorTabConstant.Companion.AUTHOR_DYNAMICS
-import com.mor.eye.util.other.AuthorTabConstant.Companion.AUTHOR_INDEX
-import com.mor.eye.util.other.AuthorTabConstant.Companion.AUTHOR_PLAY_LIST
-import com.mor.eye.util.other.AuthorTabConstant.Companion.AUTHOR_WORKS
-import com.mor.eye.util.other.DataSourceConstant.Companion.NUM
-import com.mor.eye.util.other.DataSourceConstant.Companion.START
 import com.mor.eye.util.rx.SchedulerProvider
 import com.mor.eye.util.rx.with
 import com.mor.eye.view.base.AbstractViewModel
@@ -23,10 +16,10 @@ class AuthorDetailIndexViewModel(private val repository: EyeRepository, private 
     private val _uiLoadData = MutableLiveData<List<ItemListBean>>()
     private val _uiLoadMoreData = MutableLiveData<List<ItemListBean>>()
 
-    private var stringHashMap = HashMap<String, String?>()
     private var enableScrollToEnd = true
+    private var nextPageUrl: String? = null
 
-    var tabType = AUTHOR_INDEX
+    var tabType = 0
         set(value) {
             if (value != field) {
                 field = value
@@ -69,7 +62,7 @@ class AuthorDetailIndexViewModel(private val repository: EyeRepository, private 
                                 if (findBean.nextPageUrl == null) {
                                     enableScrollToEnd = false
                                 } else {
-                                    validatePageUrl(tabType, findBean.nextPageUrl)
+                                    nextPageUrl = findBean.nextPageUrl
                                 }
                             },
                             { t ->
@@ -82,7 +75,7 @@ class AuthorDetailIndexViewModel(private val repository: EyeRepository, private 
     override fun onListScrolledToEnd() {
         if (enableScrollToEnd) {
             launch {
-                repository.getMoreAuthorDetailData(tabType, id, userType, stringHashMap)
+                repository.getLoadMoreData(nextPageUrl!!)
                         .doOnSubscribe { uiEvent.postValue(UiResource(Status.LOADING_MORE)) }
                         .with(scheduler)
                         .subscribe(
@@ -95,7 +88,7 @@ class AuthorDetailIndexViewModel(private val repository: EyeRepository, private 
                                     if (findBean.nextPageUrl == null) {
                                         enableScrollToEnd = false
                                     } else {
-                                        validatePageUrl(tabType, findBean.nextPageUrl)
+                                        nextPageUrl = findBean.nextPageUrl
                                     }
                                 },
                                 { t ->
@@ -106,13 +99,5 @@ class AuthorDetailIndexViewModel(private val repository: EyeRepository, private 
         } else {
             uiEvent.postValue(UiResource(Status.NO_MORE))
         }
-    }
-
-    private fun validatePageUrl(tabType: String, url: String) = when (tabType) {
-        AUTHOR_WORKS, AUTHOR_PLAY_LIST, AUTHOR_DYNAMICS -> {
-            stringHashMap[START] = StringUtils.urlRequest(url)[START]
-            stringHashMap[NUM] = StringUtils.urlRequest(url)[NUM]
-        }
-        else -> throw IllegalArgumentException("author url parse invalid")
     }
 }

@@ -4,6 +4,7 @@ import android.arch.persistence.room.Room
 import com.mor.eye.repository.EyeRepository
 import com.mor.eye.repository.WeatherRepositoryImpl
 import com.mor.eye.repository.local.AppDatabase
+import com.mor.eye.util.AppManager
 import com.mor.eye.util.rx.ApplicationSchedulerProvider
 import com.mor.eye.util.rx.SchedulerProvider
 import com.mor.eye.view.detail.activity.AuthorDetailViewModel
@@ -13,14 +14,14 @@ import com.mor.eye.view.detail.activity.VideoDetailViewModel
 import com.mor.eye.view.detail.fragment.AuthorDetailIndexViewModel
 import com.mor.eye.view.detail.fragment.CategoriesDetailIndexViewModel
 import com.mor.eye.view.detail.fragment.TagsDetailIndexViewModel
-import com.mor.eye.view.gallery.DefaultSystemUiSwitch
 import com.mor.eye.view.gallery.GalleryViewModel
+import com.mor.eye.view.gallery.DefaultSystemUiSwitch
 import com.mor.eye.view.home.HomeViewModel
-import com.mor.eye.view.home.category.CategoryViewModel
 import com.mor.eye.view.home.commontab.CommonTabViewModel
 import com.mor.eye.view.home.community.CommunityViewModel
 import com.mor.eye.view.home.daily.DailyViewModel
 import com.mor.eye.view.home.discovery.FindViewModel
+import com.mor.eye.view.home.category.CategoryViewModel
 import com.mor.eye.view.home.recommend.RecommendViewModel
 import com.mor.eye.view.home.search.SearchViewModel
 import org.koin.android.ext.koin.androidContext
@@ -55,6 +56,8 @@ val eyeModule = module {
     }
 
     single { DefaultSystemUiSwitch() }
+
+    single { AppManager.instance() }
 
     // Expose recentSearchDao directly
     single { get<AppDatabase>().recentSearchDao() }

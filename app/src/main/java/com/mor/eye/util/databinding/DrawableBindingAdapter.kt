@@ -1,11 +1,18 @@
 package com.mor.eye.util.databinding
 
+import android.content.Context
 import android.databinding.BindingAdapter
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
+import android.support.annotation.DrawableRes
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.mor.eye.util.other.PlatformUtils
+import com.mor.eye.util.other.VersionsUtils
+
+/**
+ * Kotlin Extension for set/get compound Drawable to TextView/EditText/Button/ProgressBar as property
+ * Pre-Lollipop : vectorDrawables.useSupportLibrary = true
+ */
 
 @BindingAdapter("drawableColor")
 fun setDrawableColor(view: TextView, color: Int) {
@@ -18,6 +25,15 @@ fun setDrawableColor(view: TextView, color: Int) {
 @BindingAdapter("progressColor")
 fun setProgressBarColor(loader: ProgressBar?, color: Int) {
     loader?.indeterminateDrawable?.setColorFilter(color, android.graphics.PorterDuff.Mode.SRC_IN)
+}
+
+fun Context.drawable(@DrawableRes id: Int): Drawable {
+    return if (VersionsUtils.isLollipop()) {
+        resources.getDrawable(id, null)
+    } else {
+        @Suppress("DEPRECATION")
+        resources.getDrawable(id)
+    }
 }
 
 fun Drawable.tint(color: Int, mode: PorterDuff.Mode = PorterDuff.Mode.SRC_IN) {
@@ -41,10 +57,10 @@ var TextView.drawableBottom: Drawable?
     set(value) = setDrawables(drawableStart, drawableTop, drawableEnd, value)
 
 private val TextView.drawables: Array<Drawable?>
-    get() = if (PlatformUtils.isJellyBeanMR1OrHigher()) compoundDrawablesRelative else compoundDrawables
+    get() = if (VersionsUtils.isJellyBeanMR1()) compoundDrawablesRelative else compoundDrawables
 
 private fun TextView.setDrawables(start: Drawable?, top: Drawable?, end: Drawable?, bottom: Drawable?) {
-    if (PlatformUtils.isJellyBeanMR1OrHigher())
+    if (VersionsUtils.isJellyBeanMR1())
         setCompoundDrawablesRelativeWithIntrinsicBounds(start, top, end, bottom)
     else
         setCompoundDrawablesWithIntrinsicBounds(start, top, end, bottom)

@@ -1,11 +1,10 @@
 package com.mor.eye.view.detail.activity
 
 import android.content.Context
+import android.os.Bundle
 import com.mor.eye.util.ktx.buildSpannedString
 import com.mor.eye.util.ktx.observeK
 import com.mor.eye.util.other.TagArgumentConstant.Companion.TAG_ID
-import com.mor.eye.util.other.TagTabConstant.Companion.TAG_DYNAMICS
-import com.mor.eye.util.other.TagTabConstant.Companion.TAG_VIDEOS
 import com.mor.eye.util.other.startKActivity
 import com.mor.eye.util.other.unsafeLazy
 import com.mor.eye.view.detail.fragment.TagsDetailIndexFragment
@@ -20,7 +19,8 @@ class TagsDetailActivity : DetailBaseActivity() {
     private val pageItems by unsafeLazy { FragmentPagerItems(this) }
     private val id by unsafeLazy { intent.getStringExtra(TAG_ID) }
 
-    override fun observeViewModel() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         model.id = id
         model.refresh()
         model.uiLoadData.observeK(this) {
@@ -43,9 +43,8 @@ class TagsDetailActivity : DetailBaseActivity() {
             pageItems.apply {
                 it.tabInfo.tabList.let { tabs ->
                     for (i in 0 until tabs.size) {
-                        val tabType = if (tabs[i].apiUrl.contains("dynamics")) TAG_DYNAMICS else TAG_VIDEOS
                         val uid = if (tabs[i].id < 0) id else tabs[i].id.toString()
-                        add(FragmentPagerItem.of(tabs[i].name, TagsDetailIndexFragment::class.java, TagsDetailIndexFragment.arguments(uid, tabType)))
+                        add(FragmentPagerItem.of(tabs[i].name, TagsDetailIndexFragment::class.java, TagsDetailIndexFragment.arguments(uid, i)))
                     }
                 }
                 view_pager.adapter = FragmentPagerItemAdapter(supportFragmentManager, pageItems)

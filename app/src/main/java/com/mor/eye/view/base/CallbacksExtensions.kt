@@ -6,15 +6,15 @@ import com.mor.eye.repository.data.Photo
 typealias OnSomeActionListener = (item: ItemListBean) -> Unit
 
 class CallbacksExtensions(
-        private var categoryClickListener: ((id: Int, iconUrl: String) -> Unit) = { _, _ -> },
-        private var authorClickListener: ((id: Int, userType: String) -> Unit) = { _, _ -> },
-        private var videoClickListener: ((videoId: Int) -> Unit) = { _ -> },
-        private var autoPlayVideoClickListener: OnSomeActionListener = { _ -> },
-        private var dynamicInfoClickListener: OnSomeActionListener = { _ -> },
-        private var bannerClickListener: ((url: String) -> Unit) = { _ -> },
-        private var toggleListener: OnSomeActionListener = { _ -> },
-        private var pictureListener: ((index: Int, urls: ArrayList<String>, photo: Photo) -> Unit) = { _, _, _ -> },
-        private var tagClickListener: ((id: Int) -> Unit) = { _ -> }
+    private var categoryClickListener: ((id: Int, iconUrl: String) -> Unit) = { _, _ -> },
+    private var authorClickListener: ((id: Int, userType: String) -> Unit) = { _, _ -> },
+    private var videoClickListener: ((videoId: Int, feedUrl: String, playUrl: String, blurUrl: String, videoTitle: String) -> Unit) = { _, _, _, _, _ -> },
+    private var autoPlayVideoClickListener: OnSomeActionListener = { _ -> },
+    private var dynamicInfoClickListener: OnSomeActionListener = { _ -> },
+    private var bannerClickListener: ((url: String) -> Unit) = { _ -> },
+    private var toggleListener: OnSomeActionListener = { _ -> },
+    private var pictureListener: ((index: Int, urls: ArrayList<String>, photo: Photo) -> Unit) = { _, _, _ -> },
+    private var tagClickListener: ((id: Int) -> Unit) = { _ -> }
 ) : Callbacks {
     override fun onAutoPlayVideoClickListener(item: ItemListBean) = autoPlayVideoClickListener(item)
 
@@ -22,7 +22,7 @@ class CallbacksExtensions(
 
     override fun onAuthorClickListener(id: Int, userType: String) = authorClickListener(id, userType)
 
-    override fun onVideoClickListener(videoId: Int) = videoClickListener(videoId)
+    override fun onVideoClickListener(videoId: Int, feedUrl: String, playUrl: String, blurUrl: String, videoTitle: String) = videoClickListener(videoId, feedUrl, playUrl, blurUrl, videoTitle)
 
     override fun onDynamicInfoClickListener(item: ItemListBean) = dynamicInfoClickListener(item)
 
@@ -32,23 +32,23 @@ class CallbacksExtensions(
 
     override fun onTagClickListener(id: Int) = tagClickListener(id)
 
-    override fun onPictureClickListener(index: Int, urls: ArrayList<String>, photo: Photo) = pictureListener(index, urls, photo)
+    override fun onPictureClickListener(index: Int, urls: List<*>?, photo: Photo) = pictureListener(index, urls as ArrayList<String>, photo)
 
-    fun categoryClick(listener: (id: Int, iconUrl: String) -> Unit) = apply { categoryClickListener = listener }
+    fun categoryClick(listener: (id: Int, iconUrl: String) -> Unit) = apply {  categoryClickListener = listener }
 
-    fun authorClick(listener: (id: Int, userType: String) -> Unit) = apply { authorClickListener = listener }
+    fun authorClick(listener: (id: Int, userType: String) -> Unit) = apply {  authorClickListener = listener }
 
-    fun videoClick(listener: (videoId: Int) -> Unit) = apply { videoClickListener = listener }
+    fun videoClick(listener: (videoId: Int, feedUrl: String, playUrl: String, blurUrl: String, videoTitle: String) -> Unit) = apply { videoClickListener = listener }
 
     fun autoPlayVideoClick(listener: (item: ItemListBean) -> Unit) = apply { autoPlayVideoClickListener = listener }
 
-    fun dynamicInfoClick(listener: (item: ItemListBean) -> Unit) = apply { dynamicInfoClickListener = listener }
+    fun dynamicInfoClick(listener: (item: ItemListBean) -> Unit) = apply {  dynamicInfoClickListener = listener }
 
-    fun bannerClick(listener: (url: String) -> Unit) = apply { bannerClickListener = listener }
+    fun bannerClick(listener: (url: String) -> Unit)  = apply {  bannerClickListener = listener }
 
-    fun toggleClick(listener: (item: ItemListBean) -> Unit) = apply { toggleListener = listener }
+    fun toggleClick(listener: (item: ItemListBean) -> Unit)  = apply {  toggleListener = listener }
 
-    fun tagClickListener(listener: (id: Int) -> Unit) = apply { tagClickListener = listener }
+    fun tagClickListener(listener: (id: Int) -> Unit) = apply {  tagClickListener = listener }
 
-    fun pictureClick(listener: (index: Int, urls: ArrayList<String>, photo: Photo) -> Unit) = apply { pictureListener = listener }
+    fun pictureClick(listener: (index: Int, urls: ArrayList<String>, photo: Photo) -> Unit)  = apply { pictureListener = listener }
 }

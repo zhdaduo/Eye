@@ -223,14 +223,14 @@ public class AndroidTagGroup extends ViewGroup {
     public AndroidTagGroup(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        float mDefaultBorderStrokeWidth = DisplayUtils.dpToPx(getContext(), 0.5f);
-        float mDefaultTextSize = DisplayUtils.dpToPx(getContext(), 13.0f);
-        float mDefaultHorizontalSpacing = DisplayUtils.dpToPx(getContext(), 8.0f);
-        float mDefaultVerticalSpacing = DisplayUtils.dpToPx(getContext(), 4.0f);
-        float mDefaultHorizontalPadding = DisplayUtils.dpToPx(getContext(), 12.0f);
-        float mDefaultVerticalPadding = DisplayUtils.dpToPx(getContext(), 3.0f);
-        float mDefaultXRadius = DisplayUtils.dpToPx(getContext(), 5.0f);
-        float mDefaultYRadius = DisplayUtils.dpToPx(getContext(), 5.0f);
+        float mDefaultBorderStrokeWidth = DisplayUtils.dpToPx(0.5f);
+        float mDefaultTextSize = DisplayUtils.dpToPx(13.0f);
+        float mDefaultHorizontalSpacing = DisplayUtils.dpToPx( 8.0f);
+        float mDefaultVerticalSpacing = DisplayUtils.dpToPx( 4.0f);
+        float mDefaultHorizontalPadding = DisplayUtils.dpToPx(12.0f);
+        float mDefaultVerticalPadding = DisplayUtils.dpToPx( 3.0f);
+        float mDefaultXRadius = DisplayUtils.dpToPx( 5.0f);
+        float mDefaultYRadius = DisplayUtils.dpToPx( 5.0f);
 
         // Load styled attributes.
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AndroidTagGroup, defStyleAttr, R.style.AndroidTagGroup);
@@ -714,13 +714,6 @@ public class AndroidTagGroup extends ViewGroup {
     }
 
     /**
-     * @see #setTags(String...)
-     */
-    public void setTags(List<String> tagList) {
-        setTags(tagList, true);
-    }
-
-    /**
      * Set the tags. It will remove all previous tags first. If in append mode, input tag will
      * request focus.
      *
@@ -728,6 +721,13 @@ public class AndroidTagGroup extends ViewGroup {
      */
     private void setTags(String... tags) {
         setTags(tags, true);
+    }
+
+    /**
+     * @see #setTags(String...)
+     */
+    public void setTags(List<String> tagList) {
+        setTags(tagList, true);
     }
 
     private void setTags(List<String> tagList, boolean requestFocusIfInAppendMode) {
@@ -847,7 +847,7 @@ public class AndroidTagGroup extends ViewGroup {
          * Called when a tag has been appended to the group.
          *
          * @param androidTagGroup parent view group
-         * @param tag             the appended tag.
+         * @param tag the appended tag.
          */
         void onAppend(AndroidTagGroup androidTagGroup, String tag);
 
@@ -855,7 +855,7 @@ public class AndroidTagGroup extends ViewGroup {
          * Called when a tag has been deleted from the the group.
          *
          * @param androidTagGroup parent view group
-         * @param tag             the deleted tag.
+         * @param tag the deleted tag.
          */
         void onDelete(AndroidTagGroup androidTagGroup, String tag);
     }
@@ -880,7 +880,7 @@ public class AndroidTagGroup extends ViewGroup {
         /**
          * input foucus change.
          *
-         * @param tagView  target view.
+         * @param tagView target view.
          * @param hasFocus has focus.
          */
         @Override
@@ -974,17 +974,20 @@ public class AndroidTagGroup extends ViewGroup {
     public class TagView extends android.support.v7.widget.AppCompatAutoCompleteTextView {
         static final int STATE_NORMAL = 1;
         static final int STATE_INPUT = 2;
+
+        private Paint mBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private Paint mBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private Paint mCheckedMarkerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         /**
          * The offset to the text.
          */
         private static final int CHECKED_MARKER_OFFSET = 16;
+
         /**
          * The stroke width of the checked marker
          */
         private static final int CHECKED_MARKER_STROKE_WIDTH = 4;
-        private Paint mBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        private Paint mBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        private Paint mCheckedMarkerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
         /**
          * The current state.
          */

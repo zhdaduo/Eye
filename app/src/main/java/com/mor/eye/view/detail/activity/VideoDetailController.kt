@@ -1,29 +1,29 @@
 package com.mor.eye.view.detail.activity
 
 import android.content.Context
-import com.airbnb.epoxy.EpoxyController
-import com.mor.eye.*
-import com.mor.eye.repository.data.Relate
+import com.mor.eye.R
+import com.mor.eye.videoDetailContent
+import com.mor.eye.VideoDetailTagBindingModel_
+import com.mor.eye.repository.data.ItemListBean
+import com.mor.eye.videoDetailHeader
 import com.mor.eye.repository.data.Video
-import com.mor.eye.util.StringUtils
+import com.mor.eye.util.NetworkUtils
 import com.mor.eye.util.epoxy.carousel
 import com.mor.eye.util.epoxy.withModelsFrom
-import com.mor.eye.util.other.isNetworkAvailable
+import com.mor.eye.view.base.AbstractEpoxyController
 import com.mor.eye.view.base.Callbacks
 
-class VideoDetailController(private val ctx: Context, private val callbacks: Callbacks) : EpoxyController() {
+class VideoDetailController(private val ctx: Context, private val callbacks: Callbacks) : AbstractEpoxyController() {
     private var isNoMore = false
 
     private var videoBean: Video? = null
-    private var loadItems = mutableListOf<Relate.ItemList>()
+    private var loadItems = mutableListOf<ItemListBean>()
 
     override fun buildModels() {
         var i = 0L
 
-        if (!ctx.isNetworkAvailable) {
-            netInvalidState {
-                id("net_invalid")
-            }
+        if (!NetworkUtils.isNetworkConnected(ctx)) {
+            buildStatusNetInvalid(callbacks, i++)
         } else {
             videoDetailContent {
                 id(i++)
@@ -33,10 +33,10 @@ class VideoDetailController(private val ctx: Context, private val callbacks: Cal
                 likeNumText(videoBean?.consumption?.collectionCount.toString())
                 shareNumText(videoBean?.consumption?.shareCount.toString())
                 replyNumText(videoBean?.consumption?.replyCount.toString())
-                likeClick { _ -> {} }
-                shareClick { _ -> {} }
-                replyClick { _ -> {} }
-                downloadClick { _ -> {} }
+                likeClick { _ -> videoCallback?.likeCallback() }
+                shareClick { _ -> videoCallback?.shareCallback() }
+                replyClick { _ -> videoCallback?.replyCallback() }
+                downloadClick { _ -> videoCallback?.downloadCallback() }
             }
 
             videoBean?.tags?.let {
@@ -48,7 +48,7 @@ class VideoDetailController(private val ctx: Context, private val callbacks: Cal
                                 .id(i++)
                                 .tagImageUrl(tagsBean.bgPicture)
                                 .tagTitleText(String.format(ctx.getString(R.string.tags), tagsBean.name))
-                                .tagClick { _ -> {} }
+                                .tagClick { _ -> callbacks.onTagClickListener(tagsBean.id.toInt()) }
                     }
                 }
             }
@@ -59,36 +59,21 @@ class VideoDetailController(private val ctx: Context, private val callbacks: Cal
                     authorUrl(it.icon)
                     authorNameText(it.name)
                     authorDesText(it.description)
-                    authorClick { _ -> {} }
-                    focusClick { _ -> {} }
+                    authorClick { _ -> callbacks.onAuthorClickListener(it.id.toInt(), "PGC") }
+                    focusClick { _ -> videoCallback?.focusCallback() }
                 }
             }
 
-            textHeaderWhite {
-                id(i++)
-                headerString("相关推荐")
-                showArrow(false)
-            }
+            buildHeaderTextCard(callbacks, ctx, i++, "相关推荐", headerDefaultColor = false)
+                    .addTo(this)
 
             loadItems.map { item ->
 
-                if (item.type == "videoSmallCard") {
-                    smallCardWhite {
-                        id(i++)
-                        timeText(StringUtils.durationFormat(item.data.duration!!))
-                        titleText(item.data.title)
-                        descriptionText(String.format(ctx.getString(R.string.small_description), item.data.category, item.data.author?.name))
-                        feedUrl(item.data.cover?.feed)
-                        videoClick { _ -> {} }
-                    }
-                }
+                buildSmallCard(callbacks, ctx, item, i++, false)
+                        .addIf(item.type == "videoSmallCard", this)
             }
 
-            if (isNoMore) {
-                textEnd {
-                    id("no_more_view")
-                }
-            }
+            buildStatusNoMore(i++).addIf(isNoMore, this)
         }
     }
 
@@ -97,7 +82,7 @@ class VideoDetailController(private val ctx: Context, private val callbacks: Cal
         requestModelBuild()
     }
 
-    fun updateCom(itemBean: List<Relate.ItemList>) {
+    fun updateCom(itemBean: List<ItemListBean>) {
         loadItems.addAll(itemBean)
         requestModelBuild()
     }
@@ -105,5 +90,19 @@ class VideoDetailController(private val ctx: Context, private val callbacks: Cal
     fun showEnd() {
         isNoMore = true
         requestModelBuild()
+    }
+
+    private var videoCallback: OnVideoCallback? = null
+
+    fun setVideoCallback(videoCallback: OnVideoCallback) {
+        this.videoCallback = videoCallback
+    }
+
+    interface OnVideoCallback {
+        fun likeCallback()
+        fun shareCallback()
+        fun replyCallback()
+        fun downloadCallback()
+        fun focusCallback()
     }
 }

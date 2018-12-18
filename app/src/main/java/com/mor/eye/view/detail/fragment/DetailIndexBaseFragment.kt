@@ -8,11 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.mor.eye.R
-import com.mor.eye.ui.EndlessRecyclerViewScrollListener
-import com.mor.eye.ui.ProgressTimeLatch
+import com.mor.eye.ui.recyclerview.EndlessRecyclerViewScrollListener
+import com.mor.eye.ui.recyclerview.ProgressTimeLatch
+import com.mor.eye.ui.video.ScrollCalculatorHelper
+import com.mor.eye.util.DisplayUtils
+import com.mor.eye.util.ktx.doOnScroll
 import com.mor.eye.util.other.unsafeLazy
-import com.mor.eye.view.base.AbstractViewModel
 import com.mor.eye.view.base.LazyFragment
+import com.mor.eye.view.base.AbstractViewModel
 import com.mor.eye.view.detail.DetailIndexBaseController
 
 abstract class DetailIndexBaseFragment : LazyFragment() {
@@ -21,6 +24,8 @@ abstract class DetailIndexBaseFragment : LazyFragment() {
     private lateinit var refreshLayout: SwipeRefreshLayout
     lateinit var swipeRefreshLatch: ProgressTimeLatch
     private lateinit var mParentView: View
+    private lateinit var scrollCalculatorHelper: ScrollCalculatorHelper
+
     val controller: DetailIndexBaseController by unsafeLazy { DetailIndexBaseController(requireContext(), callbacks) }
 
     override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -35,6 +40,18 @@ abstract class DetailIndexBaseFragment : LazyFragment() {
         initRefreshLayout()
         initRecyclerView()
         observeViewModel()
+        scrollCalculatorHelper = ScrollCalculatorHelper(R.id.video_item_player, 0, DisplayUtils.getScreenHeight(requireActivity()))
+
+        recyclerView.doOnScroll(
+                { recyclerView, _, _ ->
+                    val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
+                    val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+                    scrollCalculatorHelper.onScroll(recyclerView!!, firstVisibleItem, lastVisibleItem, lastVisibleItem - firstVisibleItem)
+                },
+                { recyclerView, newState ->
+                    scrollCalculatorHelper.onScrollStateChanged(recyclerView!!, newState)
+                }
+        )
     }
 
     private fun initRefreshLayout() {
@@ -49,7 +66,9 @@ abstract class DetailIndexBaseFragment : LazyFragment() {
         recyclerView.apply {
             itemAnimator = null
             adapter = controller.adapter
-            addOnScrollListener(EndlessRecyclerViewScrollListener(layoutManager) { _, _ -> setViewModel().onListScrolledToEnd() })
+            addOnScrollListener(EndlessRecyclerViewScrollListener(layoutManager) { _, _ ->
+                setViewModel().onListScrolledToEnd()
+            })
         }
     }
 

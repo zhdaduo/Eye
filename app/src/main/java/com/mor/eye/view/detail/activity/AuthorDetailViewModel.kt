@@ -34,9 +34,7 @@ class AuthorDetailViewModel(private val repository: EyeRepository, private val s
                     .with(scheduler)
                     .subscribe(
                             { bean ->
-                                if (bean != null) {
-                                    _uiLoadData.postValue(bean)
-                                }
+                                if (bean != null) { _uiLoadData.postValue(bean) }
                             }, {}
                     )
         }

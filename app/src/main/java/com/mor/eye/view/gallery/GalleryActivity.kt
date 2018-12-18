@@ -3,10 +3,10 @@ package com.mor.eye.view.gallery
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.graphics.Color
+import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v4.view.ViewPager
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
@@ -19,9 +19,18 @@ import com.mor.eye.databinding.ActivityGalleryBinding
 import com.mor.eye.repository.data.Photo
 import com.mor.eye.ui.AndroidTagGroup
 import com.mor.eye.util.DisplayUtils
-import com.mor.eye.util.glide.loadWithCircle
+import com.mor.eye.util.glide.loadImageCircle
 import com.mor.eye.util.ktx.onPageChangeListener
-import com.mor.eye.util.other.*
+import com.mor.eye.util.other.bindable
+import com.mor.eye.util.other.unsafeLazy
+import com.mor.eye.util.other.revealSlide
+import com.mor.eye.util.other.fadeSlideUp
+import com.mor.eye.util.other.fadeSlideDown
+import com.mor.eye.util.other.remove
+import com.mor.eye.util.other.show
+import com.mor.eye.util.other.showToast
+import com.mor.eye.util.other.finishNoAnim
+import com.mor.eye.util.other.startKActivity
 import com.mor.eye.util.other.GalleryArgumentConstant.Companion.EXTRA_LIST_URL
 import com.mor.eye.util.other.GalleryArgumentConstant.Companion.EXTRA_PHOTO
 import com.mor.eye.util.other.GalleryArgumentConstant.Companion.EXTRA_POSITION
@@ -94,13 +103,13 @@ class GalleryActivity : AppCompatActivity() {
 
     private fun initToolbar(toolbar: Toolbar) {
         setSupportActionBar(toolbar)
-        supportActionBar?.title = ""
+        supportActionBar?.title = null
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(DisplayUtils.getDrawable(this, R.mipmap.icon_detail_player_back))
     }
 
     private fun initView() {
-        ivAvatar.loadWithCircle(this, photo.avatar)
+        ivAvatar.loadImageCircle(this, photo.avatar)
         if (photo.isFollowed) {
             btnFocus.remove()
         } else {
@@ -113,9 +122,7 @@ class GalleryActivity : AppCompatActivity() {
         tvReplyNum.text = photo.replyNum.toString()
         tvPreload.setOnClickListener { showToast(getString(R.string.preload)) }
         tvShare.setOnClickListener { showToast(getString(R.string.share)) }
-        viewPager.setOnClickListener {
-            galleryViewModel.darkMode.value = !(galleryViewModel.darkMode.value ?: false)
-        }
+        viewPager.setOnClickListener { galleryViewModel.darkMode.value = !(galleryViewModel.darkMode.value ?: false) }
     }
 
     private fun initViewPager(viewPager: ViewPager, urls: List<String>, position: Int) = viewPager.run {

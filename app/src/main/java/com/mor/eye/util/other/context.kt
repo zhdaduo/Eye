@@ -11,12 +11,6 @@ import android.widget.Toast
 import com.mor.eye.EyeApplication
 import kotlin.reflect.KClass
 
-val Context.isNetworkAvailable: Boolean
-    get() {
-        val activeNetworkInfo = connectivityManager.activeNetworkInfo
-        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
-    }
-
 fun Context.showToast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 fun Context.showToast(@StringRes msgId: Int) = Toast.makeText(this, msgId, Toast.LENGTH_SHORT).show()
 

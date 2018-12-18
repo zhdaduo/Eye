@@ -133,11 +133,11 @@
                 android:layout_marginBottom="@dimen/dp_16"
                 android:drawableStart="@drawable/ic_action_message"
                 android:drawablePadding="@dimen/dp_4"
-
                 android:textColor="@color/colorWhite"
                 app:drawableColor="@{@color/colorWhite}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/tv_preload"
+
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/tv_likeNum"
                 tools:text="@sample/common.json/data/number" />

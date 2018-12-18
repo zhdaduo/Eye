@@ -42,9 +42,9 @@
             android:layout_width="@dimen/dp_40"
             android:layout_height="@dimen/dp_40"
             android:scaleType="centerCrop"
+            app:imageRound="@{pictureUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:withCorner="@{pictureUrl}"
             bind:srcCompat="@tools:sample/avatars" />
 
         <TextView
@@ -75,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_action_menu"
+            android:src="@mipmap/ic_action_menu"
             app:layout_constraintBottom_toBottomOf="@id/iv_cover"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_cover"

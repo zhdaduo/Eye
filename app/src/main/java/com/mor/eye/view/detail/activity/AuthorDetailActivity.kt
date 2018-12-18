@@ -1,12 +1,13 @@
 package com.mor.eye.view.detail.activity
 
 import android.content.Context
+import android.os.Bundle
 import com.mor.eye.R
 import com.mor.eye.repository.data.AuthorDetailBean
 import com.mor.eye.util.StringUtils
 import com.mor.eye.util.glide.loadImage
 import com.mor.eye.util.glide.loadLocalImage
-import com.mor.eye.util.glide.loadWithCircle
+import com.mor.eye.util.glide.loadImageCircle
 import com.mor.eye.util.ktx.observeK
 import com.mor.eye.util.other.AuthorArgumentConstant.Companion.AUTHOR_ID
 import com.mor.eye.util.other.AuthorArgumentConstant.Companion.AUTHOR_TYPE
@@ -21,18 +22,20 @@ import kotlinx.android.synthetic.main.activity_author_detail.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class AuthorDetailActivity : DetailBaseActivity() {
+
     private val model: AuthorDetailViewModel by viewModel()
     private val id by unsafeLazy { intent.getStringExtra(AUTHOR_ID) }
     private val userType by unsafeLazy { intent.getStringExtra(AUTHOR_TYPE) }
     private val pageItems by unsafeLazy { FragmentPagerItems(this) }
 
-    override fun getLayout(): Int = R.layout.activity_author_detail
+    override fun getContentViewResId(): Int = R.layout.activity_author_detail
 
-    override fun observeViewModel() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         model.id = id
         model.userType = userType
         model.refresh()
-        model.uiLoadData.observeK(this) { uiLoadData ->
+        model.uiLoadData.observeK(this) {uiLoadData ->
             uiLoadData?.pgcInfo?.let {
                 initAuthorUI(it)
             }
@@ -44,7 +47,7 @@ class AuthorDetailActivity : DetailBaseActivity() {
                 uiLoadData?.tabInfo?.tabList?.let { tabs ->
                     for (i in 0 until tabs.size) {
                         val uid = if (tabs[i].name == AUTHOR_WORKS) StringUtils.urlRequest(tabs.first { it.name == AUTHOR_WORKS }.apiUrl)["uid"]!! else id
-                        add(FragmentPagerItem.of(tabs[i].name, AuthorDetailIndexFragment::class.java, AuthorDetailIndexFragment.arguments(uid, userType, tabs[i].name)))
+                        add(FragmentPagerItem.of(tabs[i].name, AuthorDetailIndexFragment::class.java, AuthorDetailIndexFragment.arguments(uid, userType, i)))
                     }
                 }
 
@@ -56,7 +59,6 @@ class AuthorDetailActivity : DetailBaseActivity() {
     }
 
     override fun getPages(): FragmentPagerItems {
-        initToolbar()
         return pageItems
     }
 
@@ -68,7 +70,7 @@ class AuthorDetailActivity : DetailBaseActivity() {
         tv_like_num.text = info.collectCount.toString()
         tv_share_num.text = info.shareCount.toString()
         tv_description.text = info.description
-        iv_head.loadWithCircle(this, info.icon)
+        iv_head.loadImageCircle(this, info.icon)
         if (info.cover.isNullOrBlank()) {
             iv_cover_bg.loadLocalImage(this, R.mipmap.cover_default)
         } else {
@@ -84,7 +86,7 @@ class AuthorDetailActivity : DetailBaseActivity() {
         tv_like_num.text = info.collectCount.toString()
         tv_share_num.text = info.shareCount.toString()
         tv_description.text = info.description
-        iv_head.loadWithCircle(this, info.icon)
+        iv_head.loadImageCircle(this, info.icon)
         if (info.cover.isNullOrBlank()) {
             iv_cover_bg.loadLocalImage(this, R.mipmap.cover_default)
         } else {

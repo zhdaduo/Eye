@@ -15,7 +15,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class CommonTabFragment : BaseTabFragment() {
     private val model: CommonTabViewModel by viewModel()
     private val controller: CommonTabEpoxyController by unsafeLazy { CommonTabEpoxyController(requireContext(), callbacks) }
-    private val order by unsafeLazy { arguments!![HOME_TAB_ID] as Int }
+    private val categoryType by unsafeLazy { arguments!![HOME_TAB_ID] as Int }
 
     override fun setViewModel(): AbstractViewModel = model
 
@@ -51,7 +51,7 @@ class CommonTabFragment : BaseTabFragment() {
     }
 
     override fun lazyFetchData() {
-        model.id = order
+        model.categoryType = categoryType
         model.refresh()
     }
 

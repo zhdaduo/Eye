@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="isCarousel"
+            type="boolean" />
+
+        <variable
             name="timeText"
             type="String" />
 
@@ -49,8 +53,8 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_16"
-        android:layout_marginEnd="@dimen/dp_16">
+        android:paddingStart="@{isCarousel? (int)@dimen/dp_0 : (int)@dimen/dp_16}"
+        android:paddingEnd="@{isCarousel? (int)@dimen/dp_0 : (int)@dimen/dp_16}">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/card_view"
@@ -64,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                app:withCorner="@{feedUrl}"
+                app:imageRound="@{feedUrl}"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <android.support.v7.widget.AppCompatImageView
@@ -115,9 +119,9 @@
             android:layout_marginTop="@dimen/dp_8"
             android:onClick="@{authorClick}"
             android:scaleType="centerCrop"
+            app:imageCircle="@{coverUrl}"
             app:layout_constraintStart_toStartOf="@id/card_view"
             app:layout_constraintTop_toBottomOf="@id/card_view"
-            app:withCircle="@{coverUrl}"
             tools:srcCompat="@tools:sample/avatars" />
 
 

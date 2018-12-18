@@ -1,9 +1,9 @@
 package com.mor.eye.ui
 
 import android.content.Context
-import android.graphics.drawable.ColorDrawable
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CoordinatorLayout
+import android.graphics.drawable.ColorDrawable
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.mor.eye.R
 import com.mor.eye.util.DisplayUtils
-import com.mor.eye.util.other.PlatformUtils
+import com.mor.eye.util.other.VersionsUtils
 
 class ToolbarAlphaScrollBehavior : CoordinatorLayout.Behavior<android.support.v7.widget.Toolbar> {
 
@@ -43,9 +43,9 @@ class ToolbarAlphaScrollBehavior : CoordinatorLayout.Behavior<android.support.v7
             val alpha = 1f - Math.min(1f, Math.max(0f, ratio))
             val drawableAlpha = (alpha * 255).toInt()
             //  Log.i("ToolbarAlphaScrollBehavior", "Alpha: " + alpha);
-            if (PlatformUtils.isLOLLIPOP() || PlatformUtils.isLOLLIPOP_MR1()) {
+            if (VersionsUtils.isEqualLollipop() || VersionsUtils.isEqualLollipopMR1()) {
                 child.background.alpha = drawableAlpha
-            } else if (PlatformUtils.isKitkat()) {
+            } else if (VersionsUtils.isKitKat()) {
                 val toolbarParent = child.parent as ViewGroup
                 if (toolbarParent.childCount == 2) {
                     val count = toolbarParent.childCount

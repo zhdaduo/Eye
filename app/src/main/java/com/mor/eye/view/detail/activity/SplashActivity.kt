@@ -2,31 +2,31 @@ package com.mor.eye.view.detail.activity
 
 import android.animation.FloatEvaluator
 import android.animation.ValueAnimator
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
+import android.widget.ImageView
 import com.mor.eye.R
-import com.mor.eye.databinding.ActivitySplashBinding
 import com.mor.eye.util.glide.loadPlaceWithColor
+import com.mor.eye.util.other.bindable
+import com.mor.eye.view.base.BaseSupportActivity
 import com.mor.eye.view.home.HomeActivity
-import kotlinx.android.synthetic.main.activity_splash.*
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseSupportActivity() {
+    private val ivBg: ImageView by bindable(R.id.iv_bg)
 
-    private lateinit var mSplashBinding: ActivitySplashBinding
     private var animator: ValueAnimator? = null
+
+    override fun getContentViewResId(): Int = R.layout.activity_splash
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        mSplashBinding = DataBindingUtil.setContentView(this, R.layout.activity_splash)
         initBackground()
         startAnimation()
     }
 
     private fun initBackground() {
-        iv_bg.loadPlaceWithColor(this@SplashActivity, "http://img.kaiyanapp.com/824badb5c9fb9e272c2ea6fb7dba01cd.jpeg?imageMogr2/quality/60/format/jpg", R.color.primary_dark_material_dark)
+        ivBg.loadPlaceWithColor(this@SplashActivity, "http://img.kaiyanapp.com/824badb5c9fb9e272c2ea6fb7dba01cd.jpeg?imageMogr2/quality/60/format/jpg", R.color.primary_dark_material_dark)
     }
 
     private fun startAnimation() {
@@ -36,8 +36,8 @@ class SplashActivity : AppCompatActivity() {
             override fun onAnimationUpdate(animation: ValueAnimator) {
                 val value = animation.animatedValue as Float
                 if (value != 1.2f) {
-                    iv_bg.scaleX = value
-                    iv_bg.scaleY = value
+                    ivBg.scaleX = value
+                    ivBg.scaleY = value
                 } else {
                     goToActivity()
                 }
@@ -59,9 +59,8 @@ class SplashActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    override fun onBackPressed() {
-        android.os.Process.killProcess(android.os.Process.myPid())
-        System.exit(0)
-        super.onBackPressed()
+    override fun onBackPressedSupport() {
+        appManager.AppExit(this)
+        super.onBackPressedSupport()
     }
 }

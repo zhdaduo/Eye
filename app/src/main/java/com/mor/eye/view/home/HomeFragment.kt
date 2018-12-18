@@ -1,51 +1,65 @@
 package com.mor.eye.view.home
 
-import android.os.Bundle
-import android.view.LayoutInflater
+import android.support.v4.view.ViewPager
+import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.view.ViewGroup
 import com.mor.eye.R
-import com.mor.eye.util.ktx.observeK
+import com.mor.eye.ui.ColorFilterImageView
+import com.mor.eye.util.ktx.SimplePageChangeListener
 import com.mor.eye.util.other.unsafeLazy
 import com.mor.eye.view.base.BaseFragment
-import com.mor.eye.view.home.category.CategoryActivity
+import com.mor.eye.view.home.category.CategoryFragment
 import com.mor.eye.view.home.commontab.CommonTabFragment
 import com.mor.eye.view.home.community.CommunityFragment
 import com.mor.eye.view.home.daily.DailyFragment
 import com.mor.eye.view.home.discovery.FindFragment
 import com.mor.eye.view.home.recommend.RecommendFragment
-import com.mor.eye.view.home.search.SearchActivity
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem
+import com.mor.eye.view.home.search.SearchFragment
+import com.ogaclejapan.smarttablayout.SmartTabLayout
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.home_tab_title.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import com.shuyu.gsyvideoplayer.GSYVideoManager
 
 class HomeFragment : BaseFragment() {
-    private val model: HomeViewModel by viewModel()
+
+    private lateinit var viewPager: ViewPager
+    private lateinit var smartTabLayout: SmartTabLayout
+
     private val pages by unsafeLazy { FragmentPagerItems(requireActivity()) }
+    private val listener by unsafeLazy {
+        SimplePageChangeListener().selected {
+            //当页签切换的时候，如果有播放视频，则释放资源
+            GSYVideoManager.releaseAllVideos()
+        }
+    }
 
-    override fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.fragment_home, null)
+    override fun getLayoutRes(): Int = R.layout.fragment_home
 
-    override fun init() {
-        // model.getCategoryOrder()
-        initObserveViewModel()
-        initListener()
+    override fun getToolBarResId(): Int = R.layout.toolbar_home_tab_title
+
+    override fun initToolBar(rootView: View) {
+        toolbar = rootView.findViewById(R.id.toolbar)
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+
+        val ivAllCategory = rootView.findViewById<ColorFilterImageView>(R.id.iv_all_category)
+        val ivSearch = rootView.findViewById<ColorFilterImageView>(R.id.iv_search)
+        ivAllCategory.setOnClickListener { (parentFragment as MainFragment).startBrotherFragment(CategoryFragment.newInstance()) }
+        ivSearch.setOnClickListener { (parentFragment as MainFragment).startBrotherFragment(SearchFragment.newInstance()) }
+    }
+
+    override fun initView(rootView: View) {
+        viewPager = rootView.findViewById(R.id.view_pager)
+        smartTabLayout = rootView.findViewById(R.id.tab_view_pager)
         initTab()
     }
 
-    private fun initObserveViewModel() {
-        model.uiLoadData.observeK(this) {}
-    }
+    override fun initLogic() {
 
-    private fun initListener() {
-        iv_all_category.setOnClickListener { CategoryActivity.open(requireContext()) }
-        iv_search.setOnClickListener { SearchActivity.open(requireContext()) }
     }
 
     private fun initTab() {
+        viewPager.addOnPageChangeListener(listener)
         pages.apply {
             val tabs = resources.getStringArray(R.array.tabs)
             val tabsOrder = resources.getIntArray(R.array.tabs_order)
@@ -57,15 +71,26 @@ class HomeFragment : BaseFragment() {
                 add(FragmentPagerItem.of(tabs[i], CommonTabFragment::class.java, CommonTabFragment.arguments(tabsOrder[i])))
             }
 
-            view_pager.adapter = FragmentPagerItemAdapter(activity?.supportFragmentManager, pages)
-            view_pager.currentItem = 1
-            view_pager.offscreenPageLimit = 1
-            tab_view_pager.setViewPager(view_pager)
+            viewPager.adapter = FragmentPagerItemAdapter(activity?.supportFragmentManager, pages)
+            viewPager.currentItem = 1
+            viewPager.offscreenPageLimit = 1
+            smartTabLayout.setViewPager(viewPager)
         }
+    }
+
+    override fun showToolBar(): Boolean {
+        return true
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        viewPager.removeOnPageChangeListener(listener)
         pages.clear()
+    }
+
+    companion object {
+        fun newInstance(): HomeFragment {
+            return HomeFragment()
+        }
     }
 }

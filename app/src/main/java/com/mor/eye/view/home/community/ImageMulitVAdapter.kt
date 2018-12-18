@@ -9,10 +9,11 @@ import android.widget.ImageView
 import com.alibaba.android.vlayout.VirtualLayoutAdapter
 import com.alibaba.android.vlayout.VirtualLayoutManager
 import com.mor.eye.R
+import com.mor.eye.ui.ImageNice9Layout
 import com.mor.eye.util.DisplayUtils
 import com.mor.eye.util.glide.loadImage
 
-class ImageMultiVAdapter(layoutManager: VirtualLayoutManager, val context: Context, private val itemMargin: Int) : VirtualLayoutAdapter<ImageMultiVAdapter.ImageViewHolder>(layoutManager) {
+class ImageMultiVAdapter(layoutManager: VirtualLayoutManager, val context: Context, private val itemMargin: Int): VirtualLayoutAdapter<ImageMultiVAdapter.ImageViewHolder>(layoutManager) {
     private var pictures = mutableListOf<String>()
     private var mItemDelegate: ImageNice9Layout.ItemDelegate? = null
 
@@ -25,7 +26,7 @@ class ImageMultiVAdapter(layoutManager: VirtualLayoutManager, val context: Conte
         val width: Int
         val height: Int
         val imageCount = pictures.size
-        val displayW = DisplayUtils.getDisplayWidth(context)
+        val displayW = DisplayUtils.getScreenWidth(context)
         val imageUrl = pictures[position]
         if (imageCount == 1) {
             width = displayW
@@ -70,8 +71,8 @@ class ImageMultiVAdapter(layoutManager: VirtualLayoutManager, val context: Conte
             if (position == 0) {
                 width = ((displayW * 0.66).toInt())
                 height = width
-                layoutParams.rightMargin = 10
-                layoutParams.bottomMargin = 10
+                layoutParams.rightMargin = itemMargin
+                layoutParams.bottomMargin = itemMargin
             } else {
                 if (position == 1 || position == 2) {
                     if (position == 1) {
@@ -120,7 +121,7 @@ class ImageMultiVAdapter(layoutManager: VirtualLayoutManager, val context: Conte
         this.mItemDelegate = itemDelegate
     }
 
-    class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val mImageView = itemView.findViewById<ImageView>(R.id.item_mulit_image)
+    class ImageViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        val mImageView = itemView.findViewById<ImageView>(R.id.item_multi_image)
     }
 }

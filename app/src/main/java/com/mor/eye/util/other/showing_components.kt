@@ -24,4 +24,5 @@ fun Activity.finishNoAnim() {
     overridePendingTransition(0, 0)
 }
 
-fun <T : View> Activity.bindable(@IdRes id: Int) = lazy { findViewById<T>(id) }
+fun <T : View> Activity.bindable(@IdRes id: Int) = lazy(LazyThreadSafetyMode.NONE) { findViewById<T>(id) }
+fun <T : View> Fragment.bindable(@IdRes id: Int) = lazy(LazyThreadSafetyMode.NONE) { requireActivity().findViewById<T>(id) }

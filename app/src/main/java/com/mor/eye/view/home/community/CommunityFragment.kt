@@ -2,29 +2,26 @@ package com.mor.eye.view.home.community
 
 import com.airbnb.epoxy.EpoxyController
 import com.mor.eye.R
+import com.mor.eye.ui.video.ScrollCalculatorHelper
 import com.mor.eye.ui.Status
+import com.mor.eye.util.DisplayUtils
 import com.mor.eye.util.ktx.doOnScroll
 import com.mor.eye.util.ktx.observeK
 import com.mor.eye.util.other.unsafeLazy
 import com.mor.eye.view.base.AbstractViewModel
 import com.mor.eye.view.base.BaseTabFragment
 import com.shuyu.gsyvideoplayer.GSYVideoManager
-import com.shuyu.gsyvideoplayer.utils.CommonUtil
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CommunityFragment : BaseTabFragment() {
     private lateinit var scrollCalculatorHelper: ScrollCalculatorHelper
 
     private val model: CommunityViewModel by viewModel()
-    private val controller: CommunityEpoxyController by unsafeLazy { CommunityEpoxyController(requireActivity(), callbacks) }
+    private val controller: CommunityEpoxyController by unsafeLazy { CommunityEpoxyController( requireContext(), callbacks) }
 
     override fun init() {
         super.init()
-        // 限定范围为屏幕一半的上下偏移180
-        val playTop = CommonUtil.getScreenHeight(requireContext()) / 2 - CommonUtil.dip2px(requireContext(), 180f)
-        val playBottom = CommonUtil.getScreenHeight(requireContext()) / 2 + CommonUtil.dip2px(requireContext(), 180f)
-        // 自定播放帮助类
-        scrollCalculatorHelper = ScrollCalculatorHelper(R.id.video_item_player, playTop, playBottom)
+        scrollCalculatorHelper = ScrollCalculatorHelper(R.id.video_item_player, 0, DisplayUtils.getScreenHeight(requireActivity()))
 
         recyclerView.doOnScroll(
                 { recyclerView, _, _ ->

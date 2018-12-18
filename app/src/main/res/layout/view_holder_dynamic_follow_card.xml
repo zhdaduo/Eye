@@ -60,9 +60,9 @@
             android:onClick="@{authorClick}"
             android:scaleType="centerCrop"
             android:textColor="@color/main_text_color"
+            app:imageCircle="@{avatarUrl}"
             app:layout_constraintEnd_toStartOf="@id/tv_user_name"
             app:layout_constraintStart_toStartOf="parent"
-            app:withCircle="@{avatarUrl}"
             tools:srcCompat="@tools:sample/avatars" />
 
         <android.support.v7.widget.AppCompatTextView
@@ -112,9 +112,9 @@
                 android:layout_width="@dimen/dp_40"
                 android:layout_height="@dimen/dp_40"
                 android:scaleType="centerCrop"
+                app:imageRound="@{briefCardIconUrl}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:withCorner="@{briefCardIconUrl}"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <android.support.v7.widget.AppCompatTextView

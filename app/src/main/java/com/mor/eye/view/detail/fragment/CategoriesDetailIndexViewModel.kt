@@ -6,11 +6,7 @@ import com.mor.eye.repository.EyeRepository
 import com.mor.eye.repository.data.ItemListBean
 import com.mor.eye.ui.Status
 import com.mor.eye.ui.UiResource
-import com.mor.eye.util.StringUtils
 import com.mor.eye.util.ktx.SingleLiveEvent
-import com.mor.eye.util.other.DataSourceConstant.Companion.NUM
-import com.mor.eye.util.other.DataSourceConstant.Companion.PAGE
-import com.mor.eye.util.other.DataSourceConstant.Companion.START
 import com.mor.eye.util.rx.SchedulerProvider
 import com.mor.eye.util.rx.with
 import com.mor.eye.view.base.AbstractViewModel
@@ -20,10 +16,10 @@ class CategoriesDetailIndexViewModel(private val repository: EyeRepository, priv
     private val _uiLoadData = MutableLiveData<List<ItemListBean>>()
     private val _uiLoadMoreData = MutableLiveData<List<ItemListBean>>()
 
-    private var stringHashMap = HashMap<String, String?>()
     private var enableScrollToEnd = true
+    private var nextPageUrl: String? = null
 
-    var position = 1
+    var position = 0
         set(value) {
             if (value != field) {
                 field = value
@@ -57,7 +53,7 @@ class CategoriesDetailIndexViewModel(private val repository: EyeRepository, priv
                                 if (findBean.nextPageUrl == null) {
                                     enableScrollToEnd = false
                                 } else {
-                                    validatePageUrl(position, findBean.nextPageUrl)
+                                    nextPageUrl = findBean.nextPageUrl
                                 }
                             },
                             { t ->
@@ -70,7 +66,7 @@ class CategoriesDetailIndexViewModel(private val repository: EyeRepository, priv
     override fun onListScrolledToEnd() {
         if (enableScrollToEnd) {
             launch {
-                repository.getMoreCategoryDetailData(position, id, stringHashMap)
+                repository.getLoadMoreData(nextPageUrl!!)
                         .doOnSubscribe { uiEvent.postValue(UiResource(Status.LOADING_MORE)) }
                         .with(scheduler)
                         .subscribe(
@@ -83,7 +79,7 @@ class CategoriesDetailIndexViewModel(private val repository: EyeRepository, priv
                                     if (findBean.nextPageUrl == null) {
                                         enableScrollToEnd = false
                                     } else {
-                                        validatePageUrl(position, findBean.nextPageUrl)
+                                        nextPageUrl = findBean.nextPageUrl
                                     }
                                 },
                                 { t ->
@@ -94,16 +90,5 @@ class CategoriesDetailIndexViewModel(private val repository: EyeRepository, priv
         } else {
             uiEvent.postValue(UiResource(Status.NO_MORE))
         }
-    }
-
-    private fun validatePageUrl(position: Int, url: String) = when (position) {
-        0 -> {
-            stringHashMap[PAGE] = StringUtils.urlRequest(url)[PAGE]
-        }
-        1, 2, 3 -> {
-            stringHashMap[START] = StringUtils.urlRequest(url)[START]
-            stringHashMap[NUM] = StringUtils.urlRequest(url)[NUM]
-        }
-        else -> throw IllegalArgumentException("category url parse invalid")
     }
 }
